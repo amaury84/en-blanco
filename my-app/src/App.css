@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.Contenedor {
+  display: flex;
+}
+
+.barra-lateral {
+  width: 20%;
+  padding: 20px;
+}
+
+.diagrama-container {
+  width: 80%;
+  padding: 20px;
+}
+
+header {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.button-buscar {
+  background-color: #ec0000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-buscar:hover {
+  background-color: #ab0300;
+}
+
+input {
+  width: 200px;
+  height: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: none;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #ccc;
+}
