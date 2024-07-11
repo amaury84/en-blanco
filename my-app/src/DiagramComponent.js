@@ -28,9 +28,9 @@ const DiagramComponent = () => {
       diagramInstance.current.div = null;
     }
 
-    // Crear el nuevo diagrama con ForceDirectedLayout
+    // Crear el nuevo diagrama con TreeLayout
     const myDiagram = $(go.Diagram, diagramRef.current, {
-      'layout': $(go.ForceDirectedLayout), // Aplicar ForceDirectedLayout
+      'layout': $(go.TreeLayout), // Aplicar TreeLayout
       'undoManager.isEnabled': true
     });
 
@@ -54,26 +54,27 @@ const DiagramComponent = () => {
     // Plantilla de enlaces (sin flechas)
     myDiagram.linkTemplate = $(
       go.Link,
-      { routing: go.Link.Orthogonal, corner: 10 },
+      { routing: go.Link.AvoidsNodes, corner: 10 }, // Usar go.Link.AvoidsNodes
       $(
         go.Shape,
         { strokeWidth: 2, stroke: '#333' }
       )
     );
 
+
     // Definir el modelo de datos
     myDiagram.model = new go.GraphLinksModel(
       nodes,
       [
         { from: 'Alpha', to: 'Beta' },
-        { from: 'Alpha', to: 'Beta' },
-        { from: 'Alpha', to: 'Gamma' },
         { from: 'Alpha', to: 'Gamma' },
         { from: 'Beta', to: 'Delta' },
-        { from: 'Gamma', to: 'Delta' },
         { from: 'Gamma', to: 'Delta' }
       ]
     );
+
+
+
 
     // Guardar la instancia del diagrama
     diagramInstance.current = myDiagram;
