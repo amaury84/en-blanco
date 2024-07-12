@@ -1,7 +1,7 @@
 // src/App.js
 import React, { useState } from 'react';
 import DiagramComponent from './DiagramComponent';
-import TableComponent from './TableComponent'; // Importa el componente de la tabla
+import TableComponent from './TableComponent';
 import './App.css';
 
 const App = () => {
@@ -53,7 +53,7 @@ const App = () => {
               <p>Última consulta: {consultaGuardada}</p>
             </div>
           )}
-          <TableComponent /> {/* Añade el componente de la tabla aquí */}
+          <TableComponent query={consultaGuardada} /> {/* Añade el componente de la tabla y pasa la consulta */}
         </article>
       </main>
       <footer>

@@ -74,8 +74,6 @@ const DiagramComponent = () => {
     );
 
 
-
-
     // Guardar la instancia del diagrama
     diagramInstance.current = myDiagram;
 
