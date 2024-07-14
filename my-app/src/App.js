@@ -47,12 +47,17 @@ const App = () => {
           </aside>
         </div>
         <article className="diagrama-container">
-          <DiagramComponent consulta={consulta} consultaGuardada={consultaGuardada} setConsultaGuardada={setConsultaGuardada} />
+          <DiagramComponent
+            consulta={consultaGuardada}
+            consultaGuardada={consultaGuardada}
+            setConsultaGuardada={setConsultaGuardada} />
+
           {consultaGuardada && (
             <div className="consulta-guardada">
               <p>Última consulta: {consultaGuardada}</p>
             </div>
           )}
+          
           <TableComponent query={consultaGuardada} /> {/* Añade el componente de la tabla y pasa la consulta */}
         </article>
       </main>

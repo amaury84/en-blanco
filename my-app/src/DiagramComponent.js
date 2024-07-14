@@ -2,21 +2,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as go from 'gojs';
 import axios from 'axios';
 
-const DiagramComponent = () => {
+const DiagramComponent = ({consulta}) => {
   const diagramRef = useRef(null);
   const diagramInstance = useRef(null);
   const [nodes, setNodes] = useState([]);
 
   useEffect(() => {
+    console.log(consulta);
     // Obtener los nodos desde el backend
-    axios.get('http://localhost:5000/nodes')
+    axios.get('http://localhost:5000/nodes', {
+    params:{query: consulta}
+  })
       .then(response => {
         setNodes(response.data);
+        console.log(response.data);
       })
       .catch(error => {
         console.error('There was an error fetching the nodes!', error);
       });
-  }, []);
+  }, [consulta]);
 
   useEffect(() => {
     if (nodes.length === 0) return;
@@ -69,7 +73,13 @@ const DiagramComponent = () => {
         { from: 'Alpha', to: 'Beta' },
         { from: 'Alpha', to: 'Gamma' },
         { from: 'Beta', to: 'Delta' },
-        { from: 'Gamma', to: 'Delta' }
+        { from: 'Gamma', to: 'Delta' },
+        { from: 'Epsilon', to: 'Zeta' },
+        { from: 'Epsilon', to: 'Eta' },
+        { from: 'Zeta', to: 'Theta' },
+        { from: 'Eta', to: 'Iota' },
+        { from: 'Theta',to: 'Kappa' },
+        { from: 'Iota',to: 'Kappa'}
       ]
     );
 

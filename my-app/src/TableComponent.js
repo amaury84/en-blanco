@@ -6,11 +6,10 @@ const TableComponent = ({ query }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // Obtener los datos del backend con la consulta de búsqueda
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/nodes', {
-          params: { query }
+          params: { query } // Enviar la consulta como parámetro
         });
         setData(response.data);
       } catch (error) {
@@ -19,13 +18,12 @@ const TableComponent = ({ query }) => {
     };
 
     fetchData();
-  }, [query]);
+  }, [query]); // Actualiza cuando la consulta cambia
 
   return (
     <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Key</th>
           <th>Color</th>
         </tr>
@@ -33,7 +31,6 @@ const TableComponent = ({ query }) => {
       <tbody>
         {data.map((item) => (
           <tr key={item._id}>
-            <td>{item._id}</td>
             <td>{item.key}</td>
             <td>{item.color}</td>
           </tr>
@@ -44,3 +41,4 @@ const TableComponent = ({ query }) => {
 };
 
 export default TableComponent;
+     
