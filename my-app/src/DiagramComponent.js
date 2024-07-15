@@ -2,17 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as go from 'gojs';
 import axios from 'axios';
 
-const DiagramComponent = ({consulta}) => {
+const DiagramComponent = ({ consulta }) => {
   const diagramRef = useRef(null);
   const diagramInstance = useRef(null);
   const [nodes, setNodes] = useState([]);
 
   useEffect(() => {
     console.log(consulta);
+    
+    if(consulta == "") {
+      consulta = "";
+    }
+    
     // Obtener los nodos desde el backend
-    axios.get('http://localhost:5000/nodes', {
-    params:{query: consulta}
-  })
+    axios.get('http://localhost:5000/topologias', {
+      params: { query: consulta }
+    })
       .then(response => {
         setNodes(response.data);
         console.log(response.data);
@@ -70,16 +75,7 @@ const DiagramComponent = ({consulta}) => {
     myDiagram.model = new go.GraphLinksModel(
       nodes,
       [
-        { from: 'Alpha', to: 'Beta' },
-        { from: 'Alpha', to: 'Gamma' },
-        { from: 'Beta', to: 'Delta' },
-        { from: 'Gamma', to: 'Delta' },
-        { from: 'Epsilon', to: 'Zeta' },
-        { from: 'Epsilon', to: 'Eta' },
-        { from: 'Zeta', to: 'Theta' },
-        { from: 'Eta', to: 'Iota' },
-        { from: 'Theta',to: 'Kappa' },
-        { from: 'Iota',to: 'Kappa'}
+        { from: 'Alpha', to: 'Beta' }
       ]
     );
 

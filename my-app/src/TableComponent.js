@@ -6,9 +6,10 @@ const TableComponent = ({ query }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    console.log(data);
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/nodes', {
+        const response = await axios.get('http://localhost:5000/topologias', {
           params: { query } // Enviar la consulta como parámetro
         });
         setData(response.data);
@@ -20,25 +21,35 @@ const TableComponent = ({ query }) => {
     fetchData();
   }, [query]); // Actualiza cuando la consulta cambia
 
+  if(data.length == 0) {
+    return (<div>Sin datos</div>)
+  }
   return (
     <table>
       <thead>
         <tr>
-          <th>Key</th>
-          <th>Color</th>
+          <th>Equipo Destino</th>
+          <th>TrunkDest</th>
+          <th>_id</th>
+          <th>EquipoROU</th>
         </tr>
       </thead>
       <tbody>
-        {data.map((item) => (
+        {
+        data.map((item) => (
           <tr key={item._id}>
-            <td>{item.key}</td>
-            <td>{item.color}</td>
+            <td>{item.EquipoDestino}</td>
+            <td>{item.Trunkdest}</td>
+            <td>{item._id}</td>
+            <td>{item.EquipoRou}</td>
+
+
           </tr>
-        ))}
+        ))
+        }
       </tbody>
     </table>
   );
 };
 
 export default TableComponent;
-     
