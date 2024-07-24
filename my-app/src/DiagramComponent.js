@@ -10,14 +10,23 @@ const DiagramComponent = ({ consulta }) => {
 
   const equiposDestino = [];
   const equiposROU = [];
-
+  const equipos1Tx = [];
   let nodosConexion = [];
 
   const conexionesNodos = () => {
-    if (equiposDestino.length > 0 && equiposROU.length > 0) {
+    if (equiposDestino.length > 0 && equiposROU.length > 0 && equipos1Tx.length > 0) {
       const cnFrom = equiposDestino[0];
-      nodosConexion = equiposROU.map((equipo) => {
-        return { from: cnFrom, to: equipo }
+
+      // Conectar equiposDestino a equipos1Tx
+      nodosConexion = equipos1Tx.map((equipoTx) => {
+        return { from: cnFrom, to: equipoTx }
+      });
+
+      // Conectar equipos1Tx a equiposROU
+      equipos1Tx.forEach((equipoTx) => {
+        equiposROU.forEach((equipoRou) => {
+          nodosConexion.push({ from: equipoTx, to: equipoRou });
+        });
       });
     }
     console.log(nodosConexion);
@@ -26,58 +35,38 @@ const DiagramComponent = ({ consulta }) => {
   const estructurar = (topologias = []) => {
     console.log(topologias);
     if (topologias.length > 0) {
-
       equiposDestino.push(topologias[0].EquipoDestino);
       equiposROU.push(topologias[0].EquipoROU);
+      equipos1Tx.push(topologias[0].EquipoTx1);
       topologias.forEach(topologia => {
-        // if(equiposDestino[0] != topologia.EquipoDestino) {
         if (!equiposDestino.includes(topologia.EquipoDestino)) {
           equiposDestino.push(topologia.EquipoDestino);
-          puertosEquiposDestino.push(topologia.TrunkDest);
         }
-
         if (!equiposROU.includes(topologia.EquipoROU)) {
           equiposROU.push(topologia.EquipoROU);
         }
-
+        if (!equipos1Tx.includes(topologia.EquipoTx1)){
+          equipos1Tx.push(topologia.EquipoTx1);
+        }
       });
-
-
       console.log(equiposDestino);
       console.log(equiposROU);
-
-
-      const puertosEquiposDestino = topologias.map((topologia) => {
-        return topologia.TrunkDest;
-      });
-
-      const puertosEquiposROU = [];
-      equiposROU.forEach((equipo) => {
-        const puertosEquiposROUTemp = topologias
-          .filter((topologia) => equipo === topologia.EquipoROU)
-          .map((topologia) => topologia.TrkROU);
-
-        puertosEquiposROU.push(puertosEquiposROUTemp);
-      });
-
-      //const puertosEquiposROU = topologias.map((topologia) => {
-      //return topologia.TrkROU;
-      //});
-
-      console.log(puertosEquiposDestino);
-      console.log(puertosEquiposROU);
+      console.log(equipos1Tx);
     }
   }
 
   const actualizarGrafica = () => {
-
     const ObjEquiposDestino = equiposDestino.map((equipo) => {
-      return { key: equipo, color:'lightblue' }
+      return { key: equipo, color: 'lightgreen' }
     });
     const ObjEquiposROU = equiposROU.map((equipo) => {
-      return { key: equipo, color:'lightblue' }
+      return { key: equipo, color: 'pink' }
     });
-    const nodosTemp = [...ObjEquiposDestino, ...ObjEquiposROU];
+    const ObjEquipos1Tx = equipos1Tx.map((equipo) => {
+      return { key: equipo, color: 'lightblue' }
+    });
+
+    const nodosTemp = [...ObjEquiposDestino, ...ObjEquiposROU, ...ObjEquipos1Tx];
     setNodes(nodosTemp);
     setNodesConection(nodosConexion);
   }
@@ -85,7 +74,7 @@ const DiagramComponent = ({ consulta }) => {
   useEffect(() => {
     console.log(consulta);
 
-    if (consulta == "") {
+    if (consulta === "") {
       consulta = "";
     }
 
@@ -94,7 +83,6 @@ const DiagramComponent = ({ consulta }) => {
       params: { query: consulta }
     })
       .then(response => {
-        // setNodes(response.data);
         console.log(response.data);
         estructurar(response.data);
         conexionesNodos();
@@ -110,18 +98,15 @@ const DiagramComponent = ({ consulta }) => {
 
     const $ = go.GraphObject.make;
 
-    // Limpiar el diagrama anterior si existe
     if (diagramInstance.current) {
       diagramInstance.current.div = null;
     }
 
-    // Crear el nuevo diagrama con TreeLayout
     const myDiagram = $(go.Diagram, diagramRef.current, {
-      'layout': $(go.TreeLayout), // Aplicar TreeLayout
+      'layout': $(go.TreeLayout),
       'undoManager.isEnabled': true
     });
 
-    // Plantilla de nodos
     myDiagram.nodeTemplate = $(
       go.Node,
       'Auto',
@@ -138,32 +123,25 @@ const DiagramComponent = ({ consulta }) => {
       )
     );
 
-    // Plantilla de enlaces (sin flechas)
     myDiagram.linkTemplate = $(
       go.Link,
-      { routing: go.Link.AvoidsNodes, corner: 10 }, // Usar go.Link.AvoidsNodes
+      { routing: go.Link.AvoidsNodes, corner: 10 },
       $(
         go.Shape,
         { strokeWidth: 2, stroke: '#333' }
       )
     );
 
-
-    // Definir el modelo de datos
     myDiagram.model = new go.GraphLinksModel(
       nodes,
       nodesConection
     );
 
-
-    // Guardar la instancia del diagrama
     diagramInstance.current = myDiagram;
 
-    // Limpiar el diagrama al desmontar el componente
     return () => {
       myDiagram.div = null;
     };
-
   }, [nodes, nodesConection]);
 
   return <div ref={diagramRef} style={{ width: '100%', height: '350px', border: '1px solid black' }}></div>;

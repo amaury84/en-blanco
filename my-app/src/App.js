@@ -42,8 +42,8 @@ const App = () => {
           <aside>
             <h2>Relacionado</h2>
             <ul>
-              <li><a href="#">Sharepoint</a></li>
-              <li><a href="#">Sitio 1</a></li>
+            <li><a href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES" target="_blank" rel="noopener noreferrer">Sharepoint</a></li>
+            <li><a href="https://www.google.com/?hl=es" target="_blank" rel="noopener noreferrer">Sitio 1</a></li>
             </ul>
           </aside>
         </div>
