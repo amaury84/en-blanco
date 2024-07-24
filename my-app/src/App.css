@@ -76,3 +76,26 @@ th {
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+
+
+header {
+  width: 100%;
+  padding: 20px;
+  background-color: red;
+  color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+header h1 {
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+}
+
+header img {
+  height: 80px; /* Ajusta el tamaño de la imagen según sea necesario */
+  position: absolute;
+  right: 45px;
+}

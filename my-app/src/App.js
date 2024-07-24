@@ -20,7 +20,8 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        <h1>Topologias de red Claro</h1>
+        <h1>TOPOLOGÍAS DE RED CLARO</h1>
+        <img src={`${process.env.PUBLIC_URL}/imagenes/claro-hogar-259.jpg`} alt="Claro Logo" />
       </header>
       <main className="Contenedor">
         <div className="barra-lateral">
@@ -41,8 +42,8 @@ const App = () => {
           <aside>
             <h2>Relacionado</h2>
             <ul>
-              <li><a href="#">inf 1</a></li>
-              <li><a href="#">inf 1</a></li>
+              <li><a href="#">Sharepoint</a></li>
+              <li><a href="#">Sitio 1</a></li>
             </ul>
           </aside>
         </div>
