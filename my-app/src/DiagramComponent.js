@@ -54,6 +54,19 @@ const DiagramComponent = ({ consulta }) => {
       console.log(equipos1Tx);
     }
   }
+//logica para puertos, verificar funcionalidad 
+  // const linkDataArray = [
+  //   { from: 'Products', to: 'Suppliers', text: '0..N', toText: '1' },
+  //   { from: 'Products', to: 'Categories', text: '0..N', toText: '1' },
+  //   { from: 'Order Details', to: 'Products', text: '0..N', toText: '1' },
+  //   { from: 'Categories', to: 'Suppliers', text: '0..N', toText: '1' },
+  // ];
+  // DiagramComponent.model = new go.GraphLinksModel({
+  //   copiesArrays: true,
+  //   copiesArrayObjects: true,
+  //   nodeDataArray: nodeDataArray,
+  //   linkDataArray: linkDataArray,
+  // });
 
   const actualizarGrafica = () => {
     const ObjEquiposDestino = equiposDestino.map((equipo) => {
@@ -71,13 +84,14 @@ const DiagramComponent = ({ consulta }) => {
     setNodesConection(nodosConexion);
   }
 
+
+  ////tomar los datos de la barra de datos y buscarlos en la base de datos 
   useEffect(() => {
     console.log(consulta);
 
     if (consulta === "") {
       consulta = "";
     }
-
     // Obtener los nodos desde el backend
     axios.get('http://localhost:5000/topologias', {
       params: { query: consulta }
@@ -93,58 +107,122 @@ const DiagramComponent = ({ consulta }) => {
       });
   }, [consulta]);
 
-  useEffect(() => {
-    if (nodes.length === 0) return;
 
-    const $ = go.GraphObject.make;
+useEffect(() => {
+  if (nodes.length === 0) return;
 
-    if (diagramInstance.current) {
-      diagramInstance.current.div = null;
-    }
+  const $ = go.GraphObject.make;
 
-    const myDiagram = $(go.Diagram, diagramRef.current, {
-      'layout': $(go.TreeLayout),
-      'undoManager.isEnabled': true
+  if (diagramInstance.current) {
+    diagramInstance.current.div = null;
+  }
+
+  //tipo de diagrama
+  const myDiagram = $(go.Diagram, diagramRef.current, {
+      allowDelete: false,
+      allowCopy: false,
+      'layout': $(go.TreeLayout, { isInitial: true }),
+      'undoManager.isEnabled': true,
     });
-
-    myDiagram.nodeTemplate = $(
-      go.Node,
-      'Auto',
-      $(
-        go.Shape,
-        'RoundedRectangle',
-        { strokeWidth: 0 },
-        new go.Binding('fill', 'color')
-      ),
-      $(
-        go.TextBlock,
-        { margin: 8 },
-        new go.Binding('text', 'key')
-      )
+  
+    //estilo de nodos y texto
+  myDiagram.nodeTemplate = $(
+    go.Node,
+    'Auto',
+    {
+      row: 1,
+      column: 1,
+      name: 'BODY',
+      stretch: go.Stretch.Fill,
+    },
+    $(
+      go.Shape,
+      'RoundedRectangle',
+      { strokeWidth: 2 },
+      new go.Binding('fill', 'color')
+    ),
+    $(
+      go.TextBlock,
+      { margin: 8 , textAlign: 'center', font: '14px ARIAL'},
+      new go.Binding('text', 'key')
+    )
     );
 
-    myDiagram.linkTemplate = $(
-      go.Link,
-      { routing: go.Link.AvoidsNodes, corner: 10 },
-      $(
-        go.Shape,
-        { strokeWidth: 2, stroke: '#333' }
-      )
-    );
+  // myDiagram.linkTemplate = $(
+  //   go.Link,
+  //   { routing: go.Link.AvoidsNodes, corner: 10 },
+  //   $(
+  //     go.Shape,
+  //     { strokeWidth: 2, stroke: '#333' }
+  //   )
+  // );
 
-    myDiagram.model = new go.GraphLinksModel(
-      nodes,
-      nodesConection
-    );
 
-    diagramInstance.current = myDiagram;
+  ////-----Ejemplo libreria
+  myDiagram.linkTemplate = $(go.Link, // the whole link panel
+  {
+    selectionAdorned: true,
+    layerName: 'Background',
+    reshapable: true,
+    routing: go.Routing.AvoidsNodes,
+    corner: 5,
+    // curve: go.Curve.JumpOver,
+  },
+  $(go.Shape, // the link shape
+    { stroke: '#ffffff', strokeWidth: 2 },//////color del enlace 
+    // new go.ThemeBinding('stroke', 'link')////saltico entre lineas
+  ),
 
-    return () => {
-      myDiagram.div = null;
-    };
-  }, [nodes, nodesConection]);
 
-  return <div ref={diagramRef} style={{ width: '100%', height: '350px', border: '1px solid black' }}></div>;
+  ///puertos de cada nodo-----------
+  $(go.TextBlock, // the "from" label
+    {
+      textAlign: 'center',
+      font: 'bold 14px sans-serif',
+      stroke: 'black',
+      segmentIndex: 0,
+      segmentOffset: new go.Point(NaN, NaN),
+      segmentOrientation: go.Orientation.Upright,
+    },
+    new go.Binding('text', 'text'),
+    new go.ThemeBinding('stroke', 'text')
+  ),
+  $(go.TextBlock, // the "to" label
+    {
+      textAlign: 'center',
+      font: 'bold 14px sans-serif',
+      stroke: 'black',
+      segmentIndex: -1,
+      segmentOffset: new go.Point(NaN, NaN),
+      segmentOrientation: go.Orientation.Upright,
+    },
+    new go.Binding('text', 'toText'),
+    new go.ThemeBinding('stroke', 'text')
+  )//--------------
+);//-----------------
+  
+  myDiagram.model = new go.GraphLinksModel(
+    nodes,
+    nodesConection
+  );
+
+  diagramInstance.current = myDiagram;
+
+  return () => {
+    myDiagram.div = null;
+  };
+}, [nodes, nodesConection]);
+
+
+return     <div
+ref={diagramRef}
+style={{
+  width: '100%',
+  height: '350px',
+  border: '1px solid black',
+  backgroundColor: 'rgb(17, 24, 39)',
+}}
+></div>
 };
 
 export default DiagramComponent;

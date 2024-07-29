@@ -39,6 +39,12 @@ const App = () => {
               </button>
             </form>
           </nav>
+          <select id="tecnologia" onchange="SelecTecnologia()">
+          <option value=""> </option>
+          <option value="CMTS">CMTS</option>
+          <option value="FTTH">FTTH</option>
+          <option value="FTTO">FTTO</option>          
+         </select>
           <aside>
             <h2>Relacionado</h2>
             <ul>

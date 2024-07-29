@@ -27,24 +27,25 @@ header {
   border: 1px solid #ccc;
 }
 
+/*boton buscar*/
 .button-buscar {
   background-color: #ec0000;
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px 75px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 .button-buscar:hover {
   background-color: #ab0300;
 }
 
+/*Barra de busqueda*/
 input {
   width: 200px;
-  height: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  height: 40px;
+  box-shadow: 0 2px 5px rgba(224, 48, 48, 1);
   border: none;
   padding: 10px;
   border-radius: 3px;
@@ -99,3 +100,23 @@ header img {
   position: absolute;
   right: 45px;
 }
+
+/* Estilos para la lista desplegable */
+#tecnologia {
+  width: 200px; /* Ajusta el ancho según tus necesidades */
+  margin-top: 10px; /* Ajusta la separación desde la barra de búsqueda */
+  padding: 5px; /* Espaciado interno */
+  font-size: 16px; /* Tamaño de fuente */
+  border-radius: 4px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Borde gris claro */
+}
+
+/* Estilos para la barra de búsqueda seleccion*/
+#search {
+  width: 200px; /* Ajusta el ancho según tus necesidades */
+  padding: 5px; /* Espaciado interno */
+  font-size: 16px; /* Tamaño de fuente */
+  border-radius: 4px; /* Bordes redondeados */
+  border: 1px solid #ccc; /* Borde gris claro */
+}
+
