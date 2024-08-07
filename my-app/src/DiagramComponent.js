@@ -15,7 +15,7 @@ const DiagramComponent = ({ consulta }) => {
   let objRutaConexion = [];
 
   const rutaConexion = (topologias = []) => {
-    if (topologias.length == 0) {
+    if (topologias.length === 0) {
       return;
     }
 
@@ -80,29 +80,16 @@ const DiagramComponent = ({ consulta }) => {
       console.log(equipos1Tx);
     }
   }
-  //logica para puertos, verificar funcionalidad 
-  // const linkDataArray = [
-  //   { from: 'Products', to: 'Suppliers', text: '0..N', toText: '1' },
-  //   { from: 'Products', to: 'Categories', text: '0..N', toText: '1' },
-  //   { from: 'Order Details', to: 'Products', text: '0..N', toText: '1' },
-  //   { from: 'Categories', to: 'Suppliers', text: '0..N', toText: '1' },
-  // ];
-  // DiagramComponent.model = new go.GraphLinksModel({
-  //   copiesArrays: true,
-  //   copiesArrayObjects: true,
-  //   nodeDataArray: nodeDataArray,
-  //   linkDataArray: linkDataArray,
-  // });
 
   const actualizarGrafica = () => {
     const ObjEquiposDestino = equiposDestino.map((equipo) => {
-      return { key: equipo, color: 'lightgreen' }
+      return { key: equipo, img: '/imagenes/OLT.png' }
     });
     const ObjEquiposROU = equiposROU.map((equipo) => {
-      return { key: equipo, color: 'pink' }
+      return { key: equipo, img: '/imagenes/receptor.png' }
     });
     const ObjEquipos1Tx = equipos1Tx.map((equipo) => {
-      return { key: equipo, color: 'lightblue' }
+      return { key: equipo, img: '/imagenes/EQUIPO.png' }
     });
 
     const nodosTemp = [...ObjEquiposDestino, ...ObjEquiposROU, ...ObjEquipos1Tx];
@@ -110,8 +97,6 @@ const DiagramComponent = ({ consulta }) => {
     setNodesConection(nodosConexion);
   }
 
-
-  ////tomar los datos de la barra de datos y buscarlos en la base de datos 
   useEffect(() => {
     console.log(consulta);
 
@@ -134,7 +119,6 @@ const DiagramComponent = ({ consulta }) => {
       });
   }, [consulta]);
 
-
   useEffect(() => {
     if (nodes.length === 0) return;
 
@@ -155,7 +139,7 @@ const DiagramComponent = ({ consulta }) => {
     //estilo de nodos y texto
     myDiagram.nodeTemplate = $(
       go.Node,
-      'Auto',
+      'Vertical', // Cambio aquí para poner la imagen y el texto en vertical
       {
         row: 1,
         column: 1,
@@ -163,29 +147,17 @@ const DiagramComponent = ({ consulta }) => {
         stretch: go.Stretch.Fill,
       },
       $(
-        go.Shape,
-        'RoundedRectangle',
-        { strokeWidth: 2 },
-        new go.Binding('fill', 'color')
+        go.Picture,
+        { margin: 8, width: 50, height: 50 },
+        new go.Binding('source', 'img')
       ),
       $(
         go.TextBlock,
-        { margin: 8, textAlign: 'center', font: '14px ARIAL' },
+        { margin: 8, textAlign: 'center', font: '14px ARIAL', stroke: 'white' }, // Cambia el color del texto a blanco
         new go.Binding('text', 'key')
       )
     );
 
-    // myDiagram.linkTemplate = $(
-    //   go.Link,
-    //   { routing: go.Link.AvoidsNodes, corner: 10 },
-    //   $(
-    //     go.Shape,
-    //     { strokeWidth: 2, stroke: '#333' }
-    //   )
-    // );
-
-
-    ////-----Ejemplo libreria
     myDiagram.linkTemplate = $(go.Link, // the whole link panel
       {
         selectionAdorned: true,
@@ -193,15 +165,10 @@ const DiagramComponent = ({ consulta }) => {
         reshapable: true,
         routing: go.Routing.AvoidsNodes,
         corner: 5,
-        // curve: go.Curve.JumpOver,
       },
       $(go.Shape, // the link shape
-        { stroke: '#ffffff', strokeWidth: 2 },//////color del enlace 
-        // new go.ThemeBinding('stroke', 'link')////saltico entre lineas
+        { stroke: '#ffffff', strokeWidth: 2 }
       ),
-
-
-      ///puertos de cada nodo-----------
       $(go.TextBlock, // the "from" label
         {
           textAlign: 'center',
@@ -211,8 +178,7 @@ const DiagramComponent = ({ consulta }) => {
           segmentOffset: new go.Point(NaN, NaN),
           segmentOrientation: go.Orientation.Upright,
         },
-        new go.Binding('text', 'text'),
-        new go.ThemeBinding('stroke', 'text')
+        new go.Binding('text', 'text')
       ),
       $(go.TextBlock, // the "to" label
         {
@@ -223,10 +189,9 @@ const DiagramComponent = ({ consulta }) => {
           segmentOffset: new go.Point(NaN, NaN),
           segmentOrientation: go.Orientation.Upright,
         },
-        new go.Binding('text', 'toText'),
-        new go.ThemeBinding('stroke', 'text')
-      )//--------------
-    );//-----------------
+        new go.Binding('text', 'toText')
+      )
+    );
 
     myDiagram.model = new go.GraphLinksModel(
       nodes,
@@ -239,7 +204,6 @@ const DiagramComponent = ({ consulta }) => {
       myDiagram.div = null;
     };
   }, [nodes, nodesConection]);
-
 
   return <div
     ref={diagramRef}
