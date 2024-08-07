@@ -25,8 +25,8 @@ const TableComponent = ({ query }) => {
     return (<div>Sin datos</div>)
   }
   return (
-    <div class="table-responsive">
-      <table class="table table-striped table-hover">
+    <div className="table-responsive">
+      <table className="table table-striped table-hover">
         <thead>
           <tr>
             <th>Equipo Destino</th>
