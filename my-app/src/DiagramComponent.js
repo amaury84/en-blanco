@@ -11,6 +11,7 @@ const DiagramComponent = ({ consulta }) => {
   const equiposDestino = [];
   const equiposROU = [];
   const equipos1Tx = [];
+  const equipos2Tx = [];
   let nodosConexion = [];
   let objRutaConexion = [];
 
@@ -81,15 +82,43 @@ const DiagramComponent = ({ consulta }) => {
     }
   }
 
+///////////////////////////////////////////////////////ultima parte para edicion
+
+  const obtenerImagen = (equipo) => {
+    if (equipo.includes('ZAC') || equipo.includes('HAC') || equipo.includes('NAC')) {
+      return '/imagenes/OLT.png';
+    } else {
+      return '/imagenes/cmts.png';
+    }
+  };
+  const obtenerImagen1Tx = (equipo) => {
+    if (equipo.includes('CAJA') || equipo.includes('ODF')|| equipo.includes('FOL')) {
+      return null;
+    } else if (equipo.includes('AAC')) {
+      return '/imagenes/switch.png';
+    } else {
+      return '/imagenes/EQUIPO.png';
+    }
+  };
+  const obtenerImagenBng = (equipo) => {
+    if (equipo.includes('THBH')) {
+      return '/imagenes/thbh (1).png';
+    } else{
+      return '/imagenes/receptor.png';
+    }
+  };
+//////////////continue desde aqui.///////////////////////////////////////
+
+
   const actualizarGrafica = () => {
-    const ObjEquiposDestino = equiposDestino.map((equipo) => {
-      return { key: equipo, img: '/imagenes/OLT.png' }
+    const ObjEquiposDestino = [...equiposDestino].map((equipo) => {
+      return { key: equipo, img: obtenerImagen(equipo) }
     });
     const ObjEquiposROU = equiposROU.map((equipo) => {
-      return { key: equipo, img: '/imagenes/receptor.png' }
+      return { key: equipo, img: obtenerImagenBng(equipo) }
     });
     const ObjEquipos1Tx = equipos1Tx.map((equipo) => {
-      return { key: equipo, img: '/imagenes/EQUIPO.png' }
+      return { key: equipo, img: obtenerImagen1Tx(equipo) }
     });
 
     const nodosTemp = [...ObjEquiposDestino, ...ObjEquiposROU, ...ObjEquipos1Tx];
@@ -157,7 +186,6 @@ const DiagramComponent = ({ consulta }) => {
         new go.Binding('text', 'key')
       )
     );
-
     myDiagram.linkTemplate = $(go.Link, // the whole link panel
       {
         selectionAdorned: true,
