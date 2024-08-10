@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TableComponent = ({ query }) => {
+const TableComponent = ({ query,tecnologia }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -10,16 +10,17 @@ const TableComponent = ({ query }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/topologias', {
-          params: { query } // Enviar la consulta como parámetro
+          params: { query,tecnologia } // Enviar la consulta como parámetro
         });
         setData(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error
+      );
       }
     };
 
     fetchData();
-  }, [query]); // Actualiza cuando la consulta cambia
+  }, [query,tecnologia]); // Actualiza cuando la consulta cambia
 
   if (data.length == 0) {
     return (<div>Sin datos</div>)

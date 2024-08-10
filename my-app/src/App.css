@@ -82,7 +82,7 @@ tbody tr:nth-child(even) {
 header {
   width: 100%;
   padding: 20px;
-  background-color: red;
+  background-color: rgb(255, 0, 0);
   color: white;
   display: flex;
   align-items: center;

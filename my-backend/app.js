@@ -1,4 +1,3 @@
-
 // app.js
 const express = require('express');
 const mongoose = require('mongoose');
@@ -17,21 +16,29 @@ mongoose.connect('mongodb://localhost:27017/Claro', {
 });
 
 app.get('/topologias', async (req, res) => {
-  const { query } = req.query;
-  let nodes;
-  const regex = new RegExp(query, 'i');
-  console.log({query})
+  let { query, tecnologia } = req.query;
+  let filter = {};
+  
   if (query) {
-    nodes = await Topologia
-    .find({ EquipoDestino: new RegExp(query, 'i')}); // Filtra por la clave usando una expresión regular
-    // .find({$or: [{ EquipoROU: regex }, { EquipoDestino: regex }] }), 
-  } else {
-    node = {data: []};
-    // nodes = await Topologia.find(); // Devuelve todos los nodos si no hay consulta
+    query = new RegExp(query, 'i');
   }
-  res.json(nodes);
-});
+  
+  if (tecnologia) {
+    tecnologia = new RegExp(tecnologia, 'i');
+  }
+  
+  console.log('Filtro aplicado en backend:', filter);
+  console.log({tecnologia});
 
+  try {
+    const nodes = await Topologia.find({ EquipoDestino: query, Tecnologia: tecnologia });
+    
+    res.json(nodes);
+  } catch (error) {
+    console.error('Error al obtener los nodos:', error);
+    res.status(500).json({ error: 'Error al obtener los nodos' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
