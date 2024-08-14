@@ -13,112 +13,35 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
   const equipos1Tx = [];
   const equipos2Tx = [];
   let nodosConexion = [];
-  let objRutaConexion = [];
-
-  const rutaConexion = (topologias = []) => {
-    if (topologias.length === 0) {
-      return;
-    }
-
-    topologias.forEach(({EquipoDestino, EquipoROU, TrunkDest, TrkROU, EquipoTx1}) => {
-      if (EquipoTx1) {
-        console.log("equipo", EquipoTx1);
-        // lógica de los nodos.
-      } else {
-        console.log("No hay equipo tx1", EquipoTx1);
-        const ruta = {
-          inicial: EquipoDestino,
-          node: { from: EquipoDestino, to: EquipoROU },
-          final: EquipoROU,
-          puerto1: TrunkDest,
-          puerto2: TrkROU 
-        };
-        objRutaConexion.push(ruta);
-      }
-    });
-  }
-
-  // const conexionesNodos = () => {
-  //   if (equiposDestino.length > 0 && equiposROU.length > 0) {
-  //     const cnFrom = equiposDestino[0];
-  
-  //     // Conectar equiposDestino a equipos1Tx
-  //     nodosConexion = equipos1Tx.map((equipoTx) => {
-  //       return { from: cnFrom, to: equipoTx };
-  //     });
-  
-  //     // Conectar equipos1Tx a equipos2Tx
-  //     equipos1Tx.forEach((equipoTx) => {
-  //       equipos2Tx.forEach((equipoTx2) => {
-  //         nodosConexion.push({ from: equipoTx, to: equipoTx2 });
-  //       });
-  //     });
-  
-  //     // Conectar equipos2Tx a equiposROU
-  //     equipos2Tx.forEach((equipoTx2) => {
-  //       equiposROU.forEach((equipoRou) => {
-  //         nodosConexion.push({ from: equipoTx2, to: equipoRou });
-  //       });
-  //     });
-  
-  //     // Si no hay equipos2Tx, conectar equipos1Tx a equiposROU directamente
-  //     if (equipos2Tx.length == 0) {
-  //       equipos1Tx.forEach((equipoTx) => {
-  //         equiposROU.forEach((equipoRou) => {
-  //           nodosConexion.push({ from: equipoTx, to: equipoRou });
-  //         });
-  //       });
-  //     }
-  //   }
-  //   console.log(nodosConexion);
-  // }
-
 
   const conexionesNodos = () => {
-    if (equiposDestino.length > 0 && equipos1Tx.length > 0 && equiposROU.length > 0) {
-      const cnFrom = equiposDestino[0];
-  
-      if (equipos2Tx.length > 0) {
-        // Si Tx2 existe, conectamos: EquipoDestino -> Tx1 -> Tx2 -> ROU
-        nodosConexion = equipos1Tx.map((equipoTx1) => ({
-          from: cnFrom, 
-          to: equipoTx1 
-        }));
-  
-        equipos1Tx.forEach((equipoTx1) => {
-          equipos2Tx.forEach((equipoTx2) => {
+    if (equiposDestino.length > 0 && equipos1Tx.length > 0) {
+      const equipoDestino = equiposDestino[0];
+
+      // Conectar EquipoDestino a EquipoTx1
+      equipos1Tx.forEach(equipoTx1 => {
+        nodosConexion.push({ from: equipoDestino, to: equipoTx1 });
+
+        if (equipos2Tx.length > 0) {
+          // Si Tx2 existe, conectar Tx1 a Tx2 y luego Tx2 a EquipoROU
+          equipos2Tx.forEach(equipoTx2 => {
             nodosConexion.push({ from: equipoTx1, to: equipoTx2 });
+            equiposROU.forEach(equipoROU => {
+              nodosConexion.push({ from: equipoTx2, to: equipoROU });
+            });
           });
-        });
-  
-        equipos2Tx.forEach((equipoTx2) => {
-          equiposROU.forEach((equipoRou) => {
-            nodosConexion.push({ from: equipoTx2, to: equipoRou });
+        } else {
+          // Si Tx2 no existe, conectar Tx1 directamente a EquipoROU
+          equiposROU.forEach(equipoROU => {
+            nodosConexion.push({ from: equipoTx1, to: equipoROU });
           });
-        });
-      } else {
-        // Si Tx2 no existe, conectamos: EquipoDestino -> Tx1 -> ROU
-        nodosConexion = equipos1Tx.map((equipoTx) => {
-          return { from: cnFrom, to: equipoTx }
-        });
-        equipos1Tx.forEach((equipoTx1) => {
-          equiposROU.forEach((equipoRou) => {
-            nodosConexion.push({ from: equipoTx1, to: equipoRou });
-          });
-        });
-      }
+        }
+      });
     }
-    console.log(nodosConexion);
   };
-  
 
   const estructurar = (topologias = []) => {
-    console.log(topologias);
     if (topologias.length > 0) {
-      equiposDestino.push(topologias[0].EquipoDestino);
-      equiposROU.push(topologias[0].EquipoROU);
-      equipos1Tx.push(topologias[0].EquipoTx1);
-      equipos2Tx.push(topologias[0].EquipoTx2);
       topologias.forEach(topologia => {
         if (!equiposDestino.includes(topologia.EquipoDestino)) {
           equiposDestino.push(topologia.EquipoDestino);
@@ -129,16 +52,13 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
         if (!equipos1Tx.includes(topologia.EquipoTx1)) {
           equipos1Tx.push(topologia.EquipoTx1);
         }
-        if (topologia.EquipoTx2 &&!equipos2Tx.includes(topologia.EquipoTx2)) {
+        if (topologia.EquipoTx2 && !equipos2Tx.includes(topologia.EquipoTx2)) {
           equipos2Tx.push(topologia.EquipoTx2);
         }
       });
-      console.log(equiposDestino, "olt");
-      console.log(equiposROU, "rou");
-      console.log(equipos1Tx, "tx");
-      console.log(equipos2Tx, "tx2");
     }
-  }
+  };
+
   
   const obtenerImagen = (equipo) => {
     if (equipo.includes('ZAC') || equipo.includes('HAC') || equipo.includes('NAC')) {
@@ -171,18 +91,20 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
 
   const actualizarGrafica = () => {
     const ObjEquiposDestino = [...equiposDestino].map((equipo) => {
-      return { key: equipo, img: obtenerImagen(equipo) };
+      return { key: equipo, img: obtenerImagen(equipo),location: new go.Point(600, 350), };
     });
-    const ObjEquiposROU = equiposROU.map((equipo) => {
-      return { key: equipo, img: obtenerImagenBng(equipo) };
-    });
+   
     const ObjEquipos1Tx = equipos1Tx.map((equipo) => {
       return { key: equipo || '', img: obtenerImagen1Tx(equipo) };
     });
     const ObjEquipos2Tx = equipos2Tx.map((equipo) => {
       return { key: equipo || '', img: obtenerImagen1Tx(equipo) };
     });
-    const nodosTemp = [...ObjEquiposDestino, ...ObjEquiposROU, ...ObjEquipos1Tx, ...ObjEquipos2Tx];
+    const ObjEquiposROU = equiposROU.map((equipo) => {
+      return { key: equipo, img: obtenerImagenBng(equipo) };
+    });
+   
+    const nodosTemp = [...ObjEquiposDestino, ...ObjEquiposROU, ...ObjEquipos1Tx, ...ObjEquipos2Tx]
     setNodes(nodosTemp);
     setNodesConection(nodosConexion);
 
@@ -202,7 +124,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
       .then(response => {
         console.log('Datos recibidos:', response.data);
         estructurar(response.data);
-        rutaConexion(response.data);
+        conexionesNodos(response.data);
         conexionesNodos();
         actualizarGrafica();
       })
@@ -223,19 +145,27 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
     const myDiagram = $(go.Diagram, diagramRef.current, {
       allowDelete: false,
       allowCopy: false,
-      'layout': $(go.TreeLayout, { isInitial: true }),
+      'layout': $(go.ForceDirectedLayout, { isInitial: true
+      }),
       'undoManager.isEnabled': true,
     });
+
   
     myDiagram.nodeTemplate = $(
       go.Node,
       'Vertical',
+      { 
+        layoutConditions: go.LayoutConditions.Standard & ~go.LayoutConditions.NodeSized,
+        fromSpot: go.Spot.LeftRightSides,
+        toSpot: go.Spot.LeftRightSides,///con estas pude colocar los enlaces separados
+      },
       {
         row: 1,
         column: 1,
         name: 'BODY',
         stretch: go.Stretch.Fill,
       },
+      
       $(
         go.Picture,
         {
@@ -258,6 +188,12 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
         },
         new go.Binding('text', 'key'),
         new go.Binding('alignment', 'img', img => img ? go.Spot.Bottom : go.Spot.Center)  // ajustar el texto de las imagenes
+      ),
+      $(
+        go.Panel,
+        'Table',
+        { margin: 8, stretch: go.Stretch.Fill },
+        $(go.RowColumnDefinition, { row: 0, sizing: go.Sizing.None })
       )
     );
   
@@ -293,12 +229,24 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
           segmentOrientation: go.Orientation.Upright,
         },
         new go.Binding('text', 'toText')
+      ),
+
+      /////intento organizar los nodos de manera automatica para que no se vean desordenados por todo el diagrama
+      $(go.Panel,
+        'Table',
+        { margin: 8, stretch: go.Stretch.Fill },
+        $(go.RowColumnDefinition, { row: 0, sizing: go.Sizing.None })
+        // $(go.RowColumnDefinition, { row: 1, sizing: go.Sizing.None }), // Define the row for items
+        // $(go.RowColumnDefinition, { row: 2, sizing: go.Sizing.None }), // Define the row for inherited item    
       )
     );
   
     myDiagram.model = new go.GraphLinksModel(
       nodes,
-      nodesConection
+      nodesConection,
+      // copiesArrays: true,
+      // copiesArrayObjects: true,
+      
     );
   
     diagramInstance.current = myDiagram;
