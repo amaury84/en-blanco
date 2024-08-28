@@ -31,7 +31,7 @@ header {
 .button-buscar {
   background-color: #ec0000;
   color: #fff;
-  padding: 10px 75px;
+  padding: 10px 78px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -78,7 +78,6 @@ tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-
 header {
   width: 100%;
   padding: 20px;
@@ -120,3 +119,11 @@ header img {
   border: 1px solid #ccc; /* Borde gris claro */
 }
 
+.consulta-guardada {
+  position: relative; 
+  font-size: larger;
+  right: 1px;
+  top: 10px;
+  background-color: #fff;
+  padding: 10px;
+}

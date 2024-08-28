@@ -32,8 +32,6 @@ const TableComponent = ({ query,tecnologia }) => {
           <tr>
             <th>Equipo Destino</th>
             <th>TrunkDest</th>
-            <th>TrkROU</th>
-            <th>EquipoROU</th>
             <th>TrkRx1</th>
             <th>EquipoTx1</th>
             <th>TrkTx1</th>
@@ -49,6 +47,8 @@ const TableComponent = ({ query,tecnologia }) => {
             <th>TrkRx5</th>
             <th>EquipoTx5</th>
             <th>TrkTx5</th>
+            <th>TrkROU</th>
+            <th>EquipoROU</th>
             <th>Tecnologia</th>
             <th>UbicacionDest</th>
             <th>UbicacionRou</th>
@@ -62,8 +62,6 @@ const TableComponent = ({ query,tecnologia }) => {
               <tr key={item._id}>
                 <td>{item.EquipoDestino}</td>
                 <td>{item.TrunkDest}</td>
-                <td>{item.TrkROU}</td>
-                <td>{item.EquipoROU}</td>
                 <td>{item.TrkRx1}</td>
                 <td>{item.EquipoTx1}</td>
                 <td>{item.TrkTx1}</td>
@@ -79,6 +77,8 @@ const TableComponent = ({ query,tecnologia }) => {
                 <td>{item.TrkRx5}</td>
                 <td>{item.EquipoTx5}</td>
                 <td>{item.TrkTx5}</td>
+                <td>{item.TrkROU}</td>
+                <td>{item.EquipoROU}</td>
                 <td>{item.Tecnologia}</td>
                 <td>{item.UbicacionDest}</td>
                 <td>{item.UbicacionRou}</td>

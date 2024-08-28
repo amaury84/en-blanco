@@ -27,9 +27,6 @@ app.get('/topologias', async (req, res) => {
     tecnologia = new RegExp(tecnologia, 'i');
   }
   
-  console.log('Filtro aplicado en backend:', filter);
-  console.log({tecnologia});
-
   try {
     const nodes = await Topologia.find({ EquipoDestino: query, Tecnologia: tecnologia });
     
@@ -39,6 +36,7 @@ app.get('/topologias', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener los nodos' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import DiagramComponent from './DiagramComponent';
-import TableComponent from './TableComponent';
-import './App.css';
+import React, { useState } from "react";
+import DiagramComponent from "./DiagramComponent";
+import TableComponent from "./TableComponent";
+import "./App.css";
+import { Viscomponent } from "./Viscomponent";
 
 const App = () => {
-  const [consulta, setConsulta] = useState('');
-  const [consultaGuardada, setConsultaGuardada] = useState('');
-  const [tec, setTecnologia] = useState('FTTH');
+  const [consulta, setConsulta] = useState("");
+  const [consultaGuardada, setConsultaGuardada] = useState("");
+  const [tec, setTecnologia] = useState("FTTH");
 
   const handleInputChange = (event) => {
     setConsulta(event.target.value);
@@ -25,7 +26,10 @@ const App = () => {
     <div className="App">
       <header>
         <h1>TOPOLOGÍAS DE RED CLARO</h1>
-        <img src={`${process.env.PUBLIC_URL}/imagenes/claro-hogar-259.jpg`} alt="Claro Logo" />
+        <img
+          src={`${process.env.PUBLIC_URL}/imagenes/claro-hogar-259.jpg`}
+          alt="Claro Logo"
+        />
       </header>
       <main className="Contenedor">
         <div className="barra-lateral">
@@ -42,32 +46,35 @@ const App = () => {
                 Buscar
               </button>
             </form>
-            <select id="tecnologia" value={tec} onChange={handleSelectChange}>           
+            <select id="tecnologia" value={tec} onChange={handleSelectChange}>
               <option value="CMTS">CMTS</option>
               <option value="FTTH">FTTH</option>
               <option value="FTTO">FTTO</option>
             </select>
           </nav>
           <aside>
+            {consultaGuardada && (
+              <div className="consulta-guardada">
+                <p>Última consulta: {consultaGuardada}</p>
+              </div>
+            )}
             <h2>Relacionado</h2>
             <ul>
-              <li><a href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES" target="_blank" rel="noopener noreferrer">Sharepoint</a></li>
-              <li><a href="https://www.google.com/?hl=es" target="_blank" rel="noopener noreferrer">Sitio 1</a></li>
+              <li>
+                <a
+                  href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Sharepoint
+                </a>
+              </li>
             </ul>
           </aside>
         </div>
         <article className="diagrama-container">
-          <DiagramComponent
-            consulta={consultaGuardada}
-            tecnologia={tec}
-          />
-
-          {consultaGuardada && (
-            <div className="consulta-guardada">
-              <p>Última consulta: {consultaGuardada}</p>
-            </div>
-          )}
-          
+          <DiagramComponent consulta={consultaGuardada} tecnologia={tec} />
+          <Viscomponent query={consultaGuardada} tecnologia={tec} />
           <TableComponent query={consultaGuardada} tecnologia={tec} />
         </article>
       </main>
