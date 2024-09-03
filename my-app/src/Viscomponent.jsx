@@ -1,5 +1,5 @@
 import { Network } from "vis-network";
-import "./Viscomponent.css";
+import "./Estilos/Viscomponent.css";
 import { useEffect, useState } from "react";
 import { getTopologias } from "./services/apiService";
 import { crearMatriz } from "./helpers/matrizDataVis";
@@ -11,142 +11,166 @@ export const Viscomponent = ({ query, tecnologia }) => {
   const getData = async () => {
     try {
       const datos = await getTopologias(query, tecnologia);
-      console.log("datosawa", datos);
+      console.log("datos obtenidos:", datos);
       setData(datos);
-      const vismatriz = crearMatriz(datos);
-      setMatrizDataVis(vismatriz);
+      const visMatriz = crearMatriz(datos);
+      setMatrizDataVis(visMatriz);
     } catch (err) {
-      console.log("falla datos consulta");
+      console.log("Error al obtener los datos:", err);
     }
   };
 
   useEffect(() => {
-    getData();  
+    getData();
   }, [query, tecnologia]);
 
   useEffect(() => {
     if (matrizDataVis.length > 0) {
-      var container = document.getElementById("network");
-      var options = {
+      const container = document.getElementById("network");
+
+      const options = {
+        autoResize: true,
+        height: "100%",
+        width: "100%",
+        physics: { enabled: true, wind: { x: 1, y: 0 } },
+        layout: {
+          randomSeed: 0,
+          improvedLayout: false,
+        },
+
         nodes: {
-          shape: "box",
-          size: 30,
+          borderWidth: 7,
+          borderWidthSelected: 1,
+          shape: "dot",
           color: {
-            border: "black",
-            background: "transparent",
+            border: "#0d1b2a",
+            background: "#97C2FC",
           },
           font: {
-            size: 15,
-            color: "black",
-            align: "center",
-            face: "arial",
-            background: "white",
-            strokeColor: "black",
-            strokeWidth: 1,
+            size: 8,
+            color: "c1121f",
           },
-          imagePadding: -10,
         },
         edges: {
-          color: "black",
-          width: 2,
-          smooth: {
-            type: "dynamic", 
-            roundness: 1, 
-          },
-          dashes: false,
           arrows: {
-            to: { enabled: false },
-          },
-        },
-        physics: {
-          stabilization: true,
-          barnesHut: {
-            gravitationalConstant: -100000,
-            centralGravity: 0.1, 
-            springLength: 200, 
-          },
-          repulsion: {
-            nodeDistance: 200,
-            damping: 0.5, 
+            to: {
+              type: "arrow",
+              enabled: true,
+              scaleFactor: 0.3,
+             
+            },
           },
         },
       };
-  
+
       var nodes = [];
       var nodeIds = {};
-      var nodeIdCounter = 1;
-  
+      let nodeIdCounter = 1;
+      let firstNodeId = null;
+      let lastNodeId = null;
+
       matrizDataVis.forEach((row, index) => {
+        // Verifica el primer nodo
         if (!nodeIds[row[0]]) {
-          const isException = ["FOL", "ODF", "CAJA", "RACK"].some(keyword => row[0].toUpperCase().includes(keyword));
+          const isException = ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
+            row[0].toUpperCase().includes(keyword)
+          );
           nodeIds[row[0]] = nodeIdCounter++;
           nodes.push({
             id: nodeIds[row[0]],
             label: row[0],
             shape: isException ? "box" : "image",
             image: isException ? "" : gimag(row[0]),
-            color: isException ? { background: "white", border: "white" } : undefined,
+            color: isException
+              ? { background: "white", border: "white" }
+              : undefined,
             font: {
               color: "black",
               align: isException ? "center" : "top",
             },
-            x: index === 10 ? 0 : undefined, // Coordenada X para el primer equipo
-            y: index === 0 ? 0 : undefined, // Coordenada Y para el primer equipo
           });
+          if (index === 0) {
+            firstNodeId = nodeIds[row[0]]; // Establece el primer nodo
+          }
         }
+
+        // Verifica el último nodo
         if (row[3] && !nodeIds[row[3]]) {
-          const isException = ["FOL", "ODF", "CAJA", "RACK"].some(keyword => row[3].toUpperCase().includes(keyword));
+          const isException = ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
+            row[3].toUpperCase().includes(keyword)
+          );
+
           nodeIds[row[3]] = nodeIdCounter++;
           nodes.push({
             id: nodeIds[row[3]],
             label: row[3],
             shape: isException ? "box" : "image",
             image: isException ? "" : gimag(row[3]),
-            color: isException ? { background: "white", border: "white" } : undefined,
-            font: {
-              color: "black",
-              align: isException ? "center" : "top",
-            },
           });
+          lastNodeId = nodeIds[row[3]]; // Establece el último nodo
         }
       });
-      
-  
-      var edges = [];
-      matrizDataVis.forEach((row) => {
-        if (row[3]) {
-          var fromNode = nodeIds[row[0]];
-          var toNode = nodeIds[row[3]];
-          var salPort = row[1];
-          var llegPort = row[2];
-          var path = `${salPort} → ${llegPort}`;
-  
-          edges.push({
-            from: fromNode,
-            to: toNode,
-            label: path,
-            font: {
-              align: "center",
-              color: "black",
-              size: 15,
-              background: "white",
-            },
-            arrows: {
-              to: { enabled: false },
-            },
-          });
-        }
+
+      // Supongamos que tienes un array `data` y otro `nodes`
+      let totalLinkLength = 0;
+      data.forEach((item) => {
+        // Ajusta el cálculo de la longitud del enlace según sea necesario
+        let linkLength = item.length || 100; // Valor predeterminado si 'length' no está definido
+        totalLinkLength += linkLength;
       });
-  
-      var networkData = {
+
+      console.log("tamaño Variable", totalLinkLength);
+
+      // Especifica una distancia que quieres aplicar entre nodos
+      const distanceBetweenNodes = 180; // Cambia este valor según tu necesidad
+      const nodeSpacing = nodes.length * distanceBetweenNodes;
+
+      console.log("Node Spacing:", nodeSpacing);
+
+      // Reposiciona los nodos
+      nodes = nodes.map((node) => {
+        if (node.id === firstNodeId) {
+          return { ...node, fixed: true, x: 0, y: 0 };
+        }
+        if (node.id === lastNodeId) {
+          return { ...node, fixed: true, x: nodeSpacing, y: 0 };
+        }
+        return node;
+      });
+
+      var edges = matrizDataVis
+        .map((row) => {
+          if (row[3]) {
+            var fromNode = nodeIds[row[0]];
+            var toNode = nodeIds[row[3]];
+            var salPort = row[1];
+            var llegPort = row[2];
+            var path = `${salPort} → ${llegPort}`;
+
+            return {
+              from: fromNode,
+              to: toNode,
+              label: path,
+              font: {
+                align: "bottom",
+                color: "#6a040f",
+                size: 10,
+                strokeColor: "#e0e1dd",
+              },
+            };
+          }
+          return null;
+        })
+        .filter((edge) => edge !== null);
+
+      const networkData = {
         nodes: nodes,
         edges: edges,
       };
-  
+
       new Network(container, networkData, options);
     }
   }, [matrizDataVis]);
-  
 
   function gimag(label) {
     const upperLabel = label.toUpperCase();
@@ -163,16 +187,14 @@ export const Viscomponent = ({ query, tecnologia }) => {
         return "/imagenes/AAG.png";
       case upperLabel.includes("THBH"):
         return "/imagenes/thbh (1).png";
-      case ["FOL", "ODF", "CAJA", "RACK"].some(keyword => upperLabel.includes(keyword)):
-        return ""; // Retornar vacío ya que no se usará imagen.
+      case ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
+        upperLabel.includes(keyword)
+      ):
+        return ""; // No image for exceptions
       default:
         return "/imagenes/OLT 2.png";
     }
   }
 
-  return (
-    <>
-      <div id="network" style={{ width: "100%", minHeight: "500px" }}></div>
-    </>
-  );
+  return <div id="network" style={{ width: "100%", minHeight: "500px" }}></div>;
 };

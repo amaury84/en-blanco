@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as go from "gojs";
 import axios from "axios";
 
+
 const DiagramComponent = ({ consulta, tecnologia }) => {
   const diagramRef = useRef(null);
   const diagramInstance = useRef(null);
@@ -117,7 +118,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
     console.log("Equipos Tx2:", equipos2Tx);
     console.log("Puertos Entrada 1:", puertosEnt1);
     console.log("Puertos Salida 1:", puertosSal1);
-    console.log("Matriz:", matriz);
+   
   }
 };
 
@@ -212,49 +213,13 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
     setNodesConection(nodosConexion);
   };
 
-  const matriz = [];
-  const agregarFilaAMatriz = (topologias) => {
-    matriz.length = 0; // Limpiar la matriz si ya contiene datos
-
-    topologias.forEach((topologia) => {
-      const fila = [];
-      const valores = [];
-
-      // Extraer valores del objeto ignorando las excepciones
-      Object.keys(topologia).forEach((key) => {
-        if (!["_id", "IP", "Tecnologia"].includes(key)) {
-          valores.push(topologia[key]);
-        }
-      });
-
-      // Crear grupos de cuatro, reiniciando el ciclo por cada nuevo objeto
-      for (let i = 0; i < valores.length; i += 3) {
-        // i+=3 porque el 4º será reusado en la próxima fila
-        const fila = [];
-
-        for (let j = 0; j < 4; j++) {
-          const index = i + j;
-          if (index < valores.length) {
-            fila.push(valores[index]);
-          } else {
-            fila.push(""); // Si no hay más datos, agrega un valor vacío
-          }
-        }
-
-        matriz.push(fila);
-      }
-    });
-
-    console.log("Matriz:", matriz); // Imprime la matriz
-  };
-
   useEffect(() => {
     axios
       .get("http://localhost:5000/topologias", {
         params: { query: consulta, tecnologia: tecnologia },
       })
       .then((response) => {
-        agregarFilaAMatriz(response.data);
+        
         estructurar(response.data);
         conexionesNodos();
         actualizarGrafica();
@@ -339,10 +304,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
         },
         new go.Binding("text", "textLeft")
       ),
-      // Elimina o comenta la siguiente línea para quitar la flecha del enlace
-      // $(go.Shape,
-      //   { toArrow: 'Standard', strokeWidth: 0, fill: '#ffffff' }
-      // ),
+      
       $(
         go.TextBlock,
         {

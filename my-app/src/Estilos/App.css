@@ -24,10 +24,26 @@ body {
 header {
   width: 100%;
   padding: 20px;
-  border: 1px solid #ccc;
+  background-color: rgb(255, 0, 0);
+  color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
-/*boton buscar*/
+header h1 {
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+}
+
+header img {
+  height: 80px; /* Ajusta el tamaño de la imagen según sea necesario */
+  position: absolute;
+  right: 45px;
+}
+
+/* Botón buscar */
 .button-buscar {
   background-color: #ec0000;
   color: #fff;
@@ -37,11 +53,12 @@ header {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .button-buscar:hover {
   background-color: #ab0300;
 }
 
-/*Barra de busqueda*/
+/* Barra de búsqueda */
 input {
   width: 200px;
   height: 40px;
@@ -49,6 +66,7 @@ input {
   border: none;
   padding: 10px;
   border-radius: 3px;
+  margin-bottom: 10px; /* Espacio entre el input y el botón */
 }
 
 footer {
@@ -56,7 +74,6 @@ footer {
   padding: 20px;
   border-top: 1px solid #ccc;
 }
-
 
 table {
   width: 100%;
@@ -110,7 +127,7 @@ header img {
   border: 1px solid #ccc; /* Borde gris claro */
 }
 
-/* Estilos para la barra de búsqueda seleccion*/
+/* Estilos para la barra de búsqueda seleccion */
 #search {
   width: 200px; /* Ajusta el ancho según tus necesidades */
   padding: 5px; /* Espaciado interno */
@@ -124,6 +141,17 @@ header img {
   font-size: larger;
   right: 1px;
   top: 10px;
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 10px;
+}
+
+/* Contenedor general */
+.contenedor {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* Para alinear verticalmente el input y el botón */
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
 }
