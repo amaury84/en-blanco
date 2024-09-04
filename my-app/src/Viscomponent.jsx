@@ -44,7 +44,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
           shape: "dot",
           color: {
             border: "#0d1b2a",
-            background: "#97C2FC",
+            background: "#c1121f",
           },
           font: {
             size: 8,
@@ -60,6 +60,11 @@ export const Viscomponent = ({ query, tecnologia }) => {
              
             },
           },
+          font:
+          {
+            size: 5,
+            color: "#c1121f",
+          },
         },
       };
 
@@ -72,7 +77,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
       matrizDataVis.forEach((row, index) => {
         // Verifica el primer nodo
         if (!nodeIds[row[0]]) {
-          const isException = ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
+          const isException = ["FOL" ].some((keyword) =>
             row[0].toUpperCase().includes(keyword)
           );
           nodeIds[row[0]] = nodeIdCounter++;
@@ -82,7 +87,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
             shape: isException ? "box" : "image",
             image: isException ? "" : gimag(row[0]),
             color: isException
-              ? { background: "white", border: "white" }
+              ? { background: "black", border: "white" }
               : undefined,
             font: {
               color: "black",
@@ -96,7 +101,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
 
         // Verifica el último nodo
         if (row[3] && !nodeIds[row[3]]) {
-          const isException = ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
+          const isException = ["FOL"].some((keyword) =>
             row[3].toUpperCase().includes(keyword)
           );
 
@@ -119,13 +124,9 @@ export const Viscomponent = ({ query, tecnologia }) => {
         totalLinkLength += linkLength;
       });
 
-      console.log("tamaño Variable", totalLinkLength);
-
       // Especifica una distancia que quieres aplicar entre nodos
       const distanceBetweenNodes = 180; // Cambia este valor según tu necesidad
       const nodeSpacing = nodes.length * distanceBetweenNodes;
-
-      console.log("Node Spacing:", nodeSpacing);
 
       // Reposiciona los nodos
       nodes = nodes.map((node) => {
@@ -138,38 +139,45 @@ export const Viscomponent = ({ query, tecnologia }) => {
         return node;
       });
 
-      var edges = matrizDataVis
-        .map((row) => {
-          if (row[3]) {
-            var fromNode = nodeIds[row[0]];
-            var toNode = nodeIds[row[3]];
-            var salPort = row[1];
-            var llegPort = row[2];
-            var path = `${salPort} → ${llegPort}`;
-
-            return {
-              from: fromNode,
-              to: toNode,
-              label: path,
-              font: {
-                align: "bottom",
-                color: "#6a040f",
-                size: 10,
-                strokeColor: "#e0e1dd",
-              },
-            };
-          }
-          return null;
-        })
-        .filter((edge) => edge !== null);
-
+      var minRoundness = 0.1;  // Valor mínimo de roundness
+      var maxRoundness = 0.8;  // Valor máximo de roundness
+      
+      var edges = matrizDataVis.map((row, index) => {
+        if (row[3]) {
+          var fromNode = nodeIds[row[0]];
+          var toNode = nodeIds[row[3]];
+          var salPort = row[1];
+          var llegPort = row[2];
+          var path = `${salPort} → ${llegPort}`;
+      
+          // Calcular roundness basado en el índice
+          var roundness = minRoundness + (maxRoundness - minRoundness) * (index / (matrizDataVis.length - 1));
+      
+          return {
+            from: fromNode,
+            to: toNode,
+            label: path,
+            font: {
+              align: "bottom",
+              color: "#6a040f",
+              size: 10,
+              strokeColor: "#e0e1dd",
+            },
+            smooth: {
+              type: 'curvedCW',
+              roundness: roundness
+            },
+          };
+        }
+        return null;
+      }).filter((edge) => edge !== null);
+      
       const networkData = {
         nodes: nodes,
         edges: edges,
       };
-
       new Network(container, networkData, options);
-    }
+          }
   }, [matrizDataVis]);
 
   function gimag(label) {
@@ -187,10 +195,13 @@ export const Viscomponent = ({ query, tecnologia }) => {
         return "/imagenes/AAG.png";
       case upperLabel.includes("THBH"):
         return "/imagenes/thbh (1).png";
+      
       case ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
         upperLabel.includes(keyword)
       ):
-        return ""; // No image for exceptions
+
+      case upperLabel.includes("IPRAN"):
+        return "/imagenes/ipran.jfif"; // No image for exceptions
       default:
         return "/imagenes/OLT 2.png";
     }

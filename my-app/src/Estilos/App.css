@@ -5,6 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  border: 0px;
+}
+
+h1{
+  background-color: transparent !important;
 }
 
 .Contenedor {

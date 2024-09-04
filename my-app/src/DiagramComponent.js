@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import * as go from "gojs";
 import axios from "axios";
 
-
 const DiagramComponent = ({ consulta, tecnologia }) => {
   const diagramRef = useRef(null);
   const diagramInstance = useRef(null);
@@ -11,146 +10,61 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
 
   const equiposDestino = [];
   const equiposROU = [];
-  const equipos1Tx = [];
-  const equipos2Tx = [];
   let nodosConexion = [];
   const puertosEnt1 = [];
   const puertosSal1 = [];
-
 
   const conexionesNodos = () => {
     if (equiposDestino.length > 0) {
       const equipoDestino = equiposDestino[0];
   
-      if (equipos1Tx.length > 0) {
-        // Si existe Tx1
-        puertosEnt1.forEach((puerto, index) => {
-          const equipoTx1 = equipos1Tx[index % equipos1Tx.length];
-  
-          if (equipoTx1) {
-            nodosConexion.push({
-              from: equipoDestino,
-              to: equipoTx1,
-              textLeft: puerto,
-            });
-  
-            if (equipos2Tx.length > 0) {
-              // Si existe Tx2
-              const equipoTx2 = equipos2Tx[Math.floor(index / equipos1Tx.length) % equipos2Tx.length];
-              if (equipoTx2) {
-                nodosConexion.push({
-                  from: equipoTx1,
-                  to: equipoTx2,
-                });
-  
-                const equipoROU = equiposROU[Math.floor(index / (equipos1Tx.length * equipos2Tx.length)) % equiposROU.length];
-                if (equipoROU) {
-                  nodosConexion.push({
-                    from: equipoTx2,
-                    to: equipoROU,                    
-                    textRight: puertosSal1[index % puertosSal1.length], // Conecta usando puertosSal1 en el lado izquierdo del ROU
-                  });
-                }
-              }
-            } else {
-              // No existe Tx2, conecta Tx1 directamente a ROU
-              const equipoROU = equiposROU[Math.floor(index / equipos1Tx.length) % equiposROU.length];
-              if (equipoROU) {
-                nodosConexion.push({
-                  from: equipoTx1,
-                  to: equipoROU,               
-                  textRight: puertosSal1[index % puertosSal1.length], // Conecta usando puertosSal1 en el lado izquierdo del ROU
-                });
-              }
-            }
-          }
-        });
-      } else {
-        // No existe Tx1, conecta EquipoDestino directamente a ROU
-        puertosEnt1.forEach((puerto, index) => {
-          const equipoROU = equiposROU[index % equiposROU.length];
-          if (equipoROU) {
-            nodosConexion.push({
-              from: equipoDestino,
-              to: equipoROU,
-              textLeft: puerto,
-              
-              textLeft: puertosSal1[index % puertosSal1.length], // Conecta usando puertosSal1 en el lado izquierdo del ROU
-            });
-          }
-        });
-      }
+      puertosEnt1.forEach((puerto, index) => {
+        const equipoROU = equiposROU[index % equiposROU.length];
+        if (equipoROU) {
+          nodosConexion.push({
+            from: equipoDestino,
+            to: equipoROU,
+            textLeft: puerto,
+            textRight: puertosSal1[index % puertosSal1.length], // Conecta usando puertosSal1 en el lado derecho del ROU
+          });
+        }
+      });
   
       console.log('Conexiones de Nodos:', nodosConexion); // Imprime las conexiones de nodos
     }
   };
-  
-  
 
   const estructurar = (topologias = []) => {
-  if (topologias.length > 0) {
-    topologias.forEach((topologia) => {
-      if (!equiposDestino.includes(topologia.EquipoDestino)) {
-        equiposDestino.push(topologia.EquipoDestino);
-      }
-      if (!equiposROU.includes(topologia.EquipoROU)) {
-        equiposROU.push(topologia.EquipoROU);
-      }
-      if (!equipos1Tx.includes(topologia.EquipoTx1)) {
-        equipos1Tx.push(topologia.EquipoTx1);
-      }
-      if (topologia.EquipoTx2 && !equipos2Tx.includes(topologia.EquipoTx2)) {
-        equipos2Tx.push(topologia.EquipoTx2);
-      }
-      if (!puertosEnt1.includes(topologia.TrunkDest)) {
-        puertosEnt1.push(topologia.TrunkDest);
-      }
-      if (!puertosSal1.includes(topologia.TrkROU)) {
-        puertosSal1.push(topologia.TrkROU);
-      }
-    });
+    if (topologias.length > 0) {
+      topologias.forEach((topologia) => {
+        if (!equiposDestino.includes(topologia.EquipoDestino)) {
+          equiposDestino.push(topologia.EquipoDestino);
+        }
+        if (!equiposROU.includes(topologia.EquipoROU)) {
+          equiposROU.push(topologia.EquipoROU);
+        }
+        if (!puertosEnt1.includes(topologia.TrunkDest)) {
+          puertosEnt1.push(topologia.TrunkDest);
+        }
+        if (!puertosSal1.includes(topologia.TrkROU)) {
+          puertosSal1.push(topologia.TrkROU);
+        }
+      });
 
-    // Imprime los datos estructurados para depuración
-    console.log("Datos de la Base de Datos:", topologias);
-    console.log("Equipos Destino:", equiposDestino);
-    console.log("Equipos ROU:", equiposROU);
-    console.log("Equipos Tx1:", equipos1Tx);
-    console.log("Equipos Tx2:", equipos2Tx);
-    console.log("Puertos Entrada 1:", puertosEnt1);
-    console.log("Puertos Salida 1:", puertosSal1);
-   
-  }
-};
-
-
-  const obtenerImagen = (equipo) => {
-    if (
-      equipo.includes("ZAC") 
-    ) {
-      return "/imagenes/zte.png";
-    } else if(
-    equipo.includes("HAC") 
-    ){
-      return "/imagenes/huawei.png";
-    }else{
-      return "/imagenes/OLT 2.png";
+      // Imprime los datos estructurados para depuración
+      console.log("Datos de la Base de Datos:", topologias);
+      console.log("Equipos Destino:", equiposDestino);
+      console.log("Equipos ROU:", equiposROU);
+      console.log("Puertos Entrada 1:", puertosEnt1);
+      console.log("Puertos Salida 1:", puertosSal1);
     }
   };
 
-  const obtenerImagen1Tx = (equipo) => {
-    if (!equipo) {
-      return " "; // Si el equipo no existe lo omite
-    }
-    if (
-      equipo.includes("CAJA") ||
-      equipo.includes("ODF") ||
-      equipo.includes("FOL") ||
-      equipo.includes("PATCH") ||
-      equipo.includes("OB")
-    ) {
-      return "";
-    } else if (equipo.includes("AAC")) {
-      return "/imagenes/switch.png";
+  const obtenerImagen = (equipo) => {
+    if (equipo.includes("ZAC")) {
+      return "/imagenes/zte.png";
+    } else if (equipo.includes("HAC")) {
+      return "/imagenes/huawei.png";
     } else {
       return "/imagenes/OLT 2.png";
     }
@@ -165,45 +79,20 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
   };
 
   const actualizarGrafica = () => {
-    const x1Pos = equipos2Tx.length > 0 ? 400 : 600; // Ajusta la posición de Tx1 si no hay Tx2
-    const x2Pos = 800;
-    const rouPos = equipos2Tx.length > 0 ? 1200 : 1000; // Ajusta la posición del ROU si no hay Tx2
-
-    const centerY = 10; // Coordenada Y central de la ventana
-    const separation = 90; // Espacio entre nodos
-
-    // Calcular la posición central para Tx1
-    const totalTx1 = equipos1Tx.length;
-    const startY1 = centerY - (totalTx1 - 1) * (separation / 2); // Posición inicial para centrar los nodos
-
     const ObjEquiposDestino = equiposDestino.map((equipo, index) => ({
       key: equipo,
       img: obtenerImagen(equipo),
       loc: `0 ${index * 200}`,
     }));
 
-    const ObjEquipos1Tx = equipos1Tx.map((equipo, index) => ({
-      key: equipo || "",
-      img: obtenerImagen1Tx(equipo),
-      loc: `${x1Pos} ${startY1 + index * separation}`, // Posición ajustada para centrar los nodos
-    }));
-
-    const ObjEquipos2Tx = equipos2Tx.map((equipo, index) => ({
-      key: equipo || "",
-      img: obtenerImagen1Tx(equipo),
-      loc: `${x2Pos} ${index * 200}`, // Posición fija para Tx2
-    }));
-
     const ObjEquiposROU = equiposROU.map((equipo, index) => ({
       key: equipo,
       img: obtenerImagenBng(equipo),
-      loc: `${rouPos} ${index * 200}`, // Posición ajustada según la existencia de Tx2
+      loc: `${1000} ${index * 200}`, // Posición ajustada del ROU
     }));
 
     const nodosTemp = [
       ...ObjEquiposDestino,
-      ...ObjEquipos1Tx,
-      ...ObjEquipos2Tx,
       ...ObjEquiposROU,
     ];
 
@@ -219,7 +108,6 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
         params: { query: consulta, tecnologia: tecnologia },
       })
       .then((response) => {
-        
         estructurar(response.data);
         conexionesNodos();
         actualizarGrafica();
@@ -249,8 +137,10 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
       {
         width: 200, // Ancho fijo
         height: 100, // Alto fijo
+        margin: 10,
         fromSpot: go.Spot.LeftRightSides,
         toSpot: go.Spot.LeftRightSides,
+        
       },
       $(
         go.Picture,
@@ -304,7 +194,6 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
         },
         new go.Binding("text", "textLeft")
       ),
-      
       $(
         go.TextBlock,
         {

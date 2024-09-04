@@ -28,4 +28,10 @@ label {
     border-color:black ;
     box-sizing: border-box; /* Incluye padding y border en el width del input */
   }
+
+button{
+  color: white;
+  background-color: #ff0000; /* Green */
+
+}
   
