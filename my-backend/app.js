@@ -10,6 +10,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+
 mongoose.connect('mongodb://localhost:27017/Claro', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -34,6 +35,31 @@ app.get('/topologias', async (req, res) => {
   } catch (error) {
     console.error('Error al obtener los nodos:', error);
     res.status(500).json({ error: 'Error al obtener los nodos' });
+  }
+});
+
+// app.js
+app.post('/topologias', async (req, res) => {
+  const { IpEquipoDestino, EquipoDestino, UbicacionEquipoDestino, TrunkDest, Tecnologia, TrkROU, EquipoROU, UbicacionEquipoROU, IpEquipoROU } = req.body;
+
+  try {
+    const nuevaTopologia = new Topologia({
+      IpEquipoDestino,
+      EquipoDestino,
+      UbicacionEquipoDestino,
+      TrunkDest,
+      Tecnologia,
+      TrkROU,
+      EquipoROU,
+      UbicacionEquipoROU,
+      IpEquipoROU
+    });
+
+    await nuevaTopologia.save();
+    res.status(201).json({ message: "Topología creada con éxito!" });
+  } catch (error) {
+    console.error('Error al crear la topología:', error);
+    res.status(500).json({ error: 'Error al crear la topología' });
   }
 });
 

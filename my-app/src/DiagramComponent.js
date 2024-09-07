@@ -82,13 +82,13 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
     const ObjEquiposDestino = equiposDestino.map((equipo, index) => ({
       key: equipo,
       img: obtenerImagen(equipo),
-      loc: `0 ${index * 200}`,
+      loc: `0 ${index * 10}`,
     }));
 
     const ObjEquiposROU = equiposROU.map((equipo, index) => ({
       key: equipo,
       img: obtenerImagenBng(equipo),
-      loc: `${1000} ${index * 200}`, // Posición ajustada del ROU
+      loc: `${500} ${index * 150}`, // Posición ajustada del ROU y el espacio con el otro equipo
     }));
 
     const nodosTemp = [

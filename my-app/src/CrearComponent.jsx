@@ -5,31 +5,33 @@ import { Link } from "react-router-dom";
 import "./Estilos/CrearComponent.css";
 
 function CrearComponent() {
+  const [ipEquipoDestino, setIpEquipoDestino] = useState("");
   const [equipoDestino, setEquipoDestino] = useState("");
-  const [Puertodestino, setPuertodestino] = useState("");
-  const [ipdestino, setIpEquipoDestino] = useState("");
-  const [ubicacionDest, setubicacionDestino] = useState("");
-  const [puertoRx1, setPuertoRx1] = useState("");
-  const [equipoTx1, setEquipoTx1] = useState("");
-  const [puertoTx1, setPuertoTx1] = useState("");
-  const [puertoROU, setPuertoROU] = useState("");
+  const [ubicacionEquipoDestino, setUbicacionEquipoDestino] = useState("");
+  const [trunkDest, setTrunkDest] = useState("");
+  const [tecnologia, setTecnologia] = useState("");
+  const [trkROU, setTrkROU] = useState("");
+  const [equipoROU, setEquipoROU] = useState("");
+  const [ubicacionEquipoROU, setUbicacionEquipoROU] = useState("");
+  const [ipEquipoROU, setIpEquipoROU] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { 
     e.preventDefault();
 
     const newTopologia = {
+      IpEquipoDestino: ipEquipoDestino,
       EquipoDestino: equipoDestino,
-      TrunkDest: Puertodestino,
-      IpDestino: ipdestino,
-      UbicacionDestino: ubicacionDest,
-      PuertoRx1: puertoRx1,
-      EquipoTx1: equipoTx1,
-      PuertoTx1: puertoTx1,
-      PuertoROU: puertoROU,
+      UbicacionEquipoDestino: ubicacionEquipoDestino,
+      TrunkDest: trunkDest,
+      Tecnologia: tecnologia,
+      TrkROU: trkROU,
+      EquipoROU: equipoROU,
+      UbicacionEquipoROU: ubicacionEquipoROU,
+      IpEquipoROU: ipEquipoROU,
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/topologia", newTopologia);
+      const response = await axios.post("http://localhost:5000/topologias", newTopologia);
       alert("Topología creada con éxito!");
     } catch (error) {
       console.error("Error al crear la topología:", error);
@@ -47,6 +49,13 @@ function CrearComponent() {
 
       <form onSubmit={handleSubmit}>
         <div>
+          <label htmlFor="ipEquipoDestino">IP Equipo Destino:</label>
+          <input
+            type="text"
+            id="ipEquipoDestino"
+            value={ipEquipoDestino}
+            onChange={(e) => setIpEquipoDestino(e.target.value)}
+          />
           <label htmlFor="equipoDestino">Equipo Destino:</label>
           <input
             type="text"
@@ -54,41 +63,54 @@ function CrearComponent() {
             value={equipoDestino}
             onChange={(e) => setEquipoDestino(e.target.value)}
           />
-          <label htmlFor="Puertodestino">Puerto Equipo Destino</label>
+          <label htmlFor="ubicacionEquipoDestino">Ubicación Equipo Destino:</label>
           <input
             type="text"
-            id="Puertodestino"
-            value={Puertodestino}
-            onChange={(e) => setPuertodestino(e.target.value)}
+            id="ubicacionEquipoDestino"
+            value={ubicacionEquipoDestino}
+            onChange={(e) => setUbicacionEquipoDestino(e.target.value)}
           />
-          <label htmlFor="ipdestino">IP Equipo Destino</label>
+          <label htmlFor="trunkDest">Trunk Dest:</label>
           <input
             type="text"
-            id="ipdestino"
-            value={ipdestino}
-            onChange={(e) => setIpEquipoDestino(e.target.value)}
+            id="trunkDest"
+            value={trunkDest}
+            onChange={(e) => setTrunkDest(e.target.value)}
           />
-
-          <label htmlFor="ubicacionDest">Ubicacion Equipo Destino</label>
+          <label htmlFor="tecnologia">Tecnología:</label>
           <input
             type="text"
-            id="ubicacionDest"
-            value={ubicacionDest}
-            onChange={(e) => setubicacionDestino(e.target.value)}
+            id="tecnologia"
+            value={tecnologia}
+            onChange={(e) => setTecnologia(e.target.value)}
           />
-          <label htmlFor="puertoRx1">Puerto Rx Equipo Transmisión 1</label>
+          <label htmlFor="trkROU">Trk ROU:</label>
           <input
             type="text"
-            id="puertoRx1"
-            value={puertoRx1}
-            onChange={(e) => setPuertoRx1(e.target.value)}
+            id="trkROU"
+            value={trkROU}
+            onChange={(e) => setTrkROU(e.target.value)}
           />
-          <label htmlFor="equipoTx1">Equipo Transmisión 1</label>
+          <label htmlFor="equipoROU">Equipo ROU:</label>
           <input
             type="text"
-            id="equipoTx1"
-            value={equipoTx1}
-            onChange={(e) => setEquipoTx1(e.target.value)}
+            id="equipoROU"
+            value={equipoROU}
+            onChange={(e) => setEquipoROU(e.target.value)}
+          />
+          <label htmlFor="ubicacionEquipoROU">Ubicación Equipo ROU:</label>
+          <input
+            type="text"
+            id="ubicacionEquipoROU"
+            value={ubicacionEquipoROU}
+            onChange={(e) => setUbicacionEquipoROU(e.target.value)}
+          />
+          <label htmlFor="ipEquipoROU">IP Equipo ROU:</label>
+          <input
+            type="text"
+            id="ipEquipoROU"
+            value={ipEquipoROU}
+            onChange={(e) => setIpEquipoROU(e.target.value)}
           />
         </div>
         <button type="submit">Crear Topología</button>
