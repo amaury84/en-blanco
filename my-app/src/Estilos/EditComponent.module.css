@@ -1,0 +1,16 @@
+.contenedorEncabezadoEditar{
+  text-align: center;
+}
+
+.ingreseOlt{
+  font-size: 20px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.inputBusquedaEditar{
+  width: 300px;
+  text-align: center;
+  border-radius: 5px;
+}
+

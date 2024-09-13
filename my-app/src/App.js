@@ -5,7 +5,8 @@ import TableComponent from "./TableComponent";
 import EditComponent from "./EditComponent";
 import CrearComponent from "./CrearComponent";
 import { Route, Routes, Link, useLocation } from "react-router-dom";
-import "./Estilos/App.css";
+import styles from "./Estilos/App.module.css";
+import "./Estilos/estilosGlobales.css";
 
 const App = () => {
   const [consulta, setConsulta] = useState("");
@@ -29,6 +30,27 @@ const App = () => {
 
   return (
     <div className="App">
+      <div className="mainContainer">
+        <div className="banderaContainer">
+          <img
+            src="/imagenes/flag-colombia.png"
+            alt="Bandera"
+            className="bandera"
+          />
+        </div>
+        <div className="botonesContainer">
+          <Link to="/" className="cuadroBotones">
+            Inicio
+          </Link>
+          <Link to="/crear" className="cuadroBotones">
+            Crear
+          </Link>
+          <Link to="/edit" className="cuadroBotones">
+            Editar
+          </Link>
+        </div>
+      </div>
+
       <header>
         <h1>TOPOLOGÍAS DE RED CLARO</h1>
         <img
@@ -36,61 +58,71 @@ const App = () => {
           alt="Claro Logo"
         />
       </header>
-      
+
       {location.pathname !== "/edit" && location.pathname !== "/crear" && (
         <>
-          <main className="Contenedor">
-            <div className="barra-lateral">
-              <nav>
-                <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    id="buscador"
-                    placeholder="Buscar"
-                    value={consulta}
-                    onChange={handleInputChange}
-                  />
-                  <button className="button-buscar" type="submit">
-                    Buscar
-                  </button>
-                </form>
-                <select id="tecnologia" value={tec} onChange={handleSelectChange}>
-                  <option value="CMTS">CMTS</option>
-                  <option value="FTTH">FTTH</option>
-                  <option value="FTTO">FTTO</option>
-                </select>
+          <main>
+            <div className={styles.todoContenedorInicio}>
+              <div className={styles.barraLateral}>
+                <nav>
+                  <form
+                    className={styles.FormularioBusquedaInicial}
+                    onSubmit={handleSubmit}
+                  >
+                    <input
+                      className={styles.barraBusqueda}
+                      type="text"
+                      id="buscador"
+                      placeholder="Nombre del equipo"
+                      value={consulta}
+                      onChange={handleInputChange}
+                    />
+                    <button className={styles.botonBuscar} type="submit">
+                      Buscar
+                    </button>
+                  </form>
+
+                  <select
+                    className={styles.tecnologiaBusqueda}
+                    id="tecnologia"
+                    value={tec}
+                    onChange={handleSelectChange}
+                  >
+                    <option value="CMTS">CMTS</option>
+                    <option value="FTTH">FTTH</option>
+                    <option value="FTTO">FTTO</option>
+                  </select>
+                </nav>
                 <br />
-                <br />
-                <Link to="/edit">Editar</Link> {/* Enlace a EditComponent */}
-                <br />
-                <Link to="/crear">Crear Nueva Topología</Link> {/* Enlace a CrearComponent */}
-              </nav>
-              <br />
-              <aside>
-                {consultaGuardada && (
-                  <div className="consulta-guardada">
-                    <p>Última consulta: {consultaGuardada}</p>
-                  </div>
-                )}
-                <h2>Relacionado</h2>
-                <ul>
-                  <li>
-                    <a
-                      href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Sharepoint
-                    </a>
-                  </li>
-                </ul>
-              </aside>
+                <aside>
+                  {consultaGuardada && (
+                    <div>
+                      <p>Última consulta: {consultaGuardada}</p>
+                    </div>
+                  )}
+                  <h2>Relacionado</h2>
+                  <ul>
+                    <li>
+                      <a
+                        href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Sharepoint
+                      </a>
+                    </li>
+                  </ul>
+                </aside>
+              </div>
+              <article className={styles.diagramaContainer}>
+                <DiagramComponent
+                  consulta={consultaGuardada}
+                  tecnologia={tec}
+                />
+                <Viscomponent query={consultaGuardada} tecnologia={tec} />
+                <TableComponent query={consultaGuardada} tecnologia={tec} />
+              </article>
             </div>
-            <article className="diagrama-container">
-              <DiagramComponent consulta={consultaGuardada} tecnologia={tec} />
-              <Viscomponent query={consultaGuardada} tecnologia={tec} />
-              <TableComponent query={consultaGuardada} tecnologia={tec} />
-            </article>
           </main>
           <footer>
             <p>&copy; Claro Colombia</p>

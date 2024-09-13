@@ -1,0 +1,68 @@
+
+.barraLateral {
+  width: 20%;
+  padding: 20px;
+}
+
+.diagramaContainer {
+  width: 80%;
+  padding: 20px;
+}
+
+.todoContenedorInicio{
+  display: flex; /* Coloca los elementos en fila */
+  flex-direction: row; /* Mantiene la dirección en horizontal */
+}
+
+.FormularioBusquedaInicial{
+  display: block;
+  /* Usar grid para organizar en columnas */
+}
+
+.barraBusqueda{
+  width: 200px;
+  height: 50px;
+  box-shadow: 0 2px 5px rgb(0, 0, 0);
+  border: none;
+  padding: 10px;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+/* Botón buscar */
+.botonBuscar {
+  background-color: #ff0404;
+  box-shadow: 0 2px 5px rgb(0, 0, 0);
+  color: #fff;
+  padding: 10px 20px;
+  /* Ajusta el padding para que coincida con la altura del input */
+  border: none;
+  border-radius: 5px;
+  height: 50px;
+  width: 200px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: background-color 0.3s;
+  box-sizing: border-box;
+  /* Incluye padding y border en el width y height */
+}
+
+.botonBuscar:hover {
+  background-color: #ab0300;
+}
+
+/* Estilos para la lista desplegable */
+.tecnologiaBusqueda {
+  width: 200px;
+  /* Ajusta el ancho según tus necesidades */
+  margin-top: 10px;
+  /* Ajusta la separación desde la barra de búsqueda */
+  padding: 5px;
+  /* Espaciado interno */
+  font-size: 16px;
+  /* Tamaño de fuente */
+  border-radius: px;
+  /* Bordes redondeados */
+  box-shadow: 0 2px 5px rgb(0, 0, 0);
+}
+

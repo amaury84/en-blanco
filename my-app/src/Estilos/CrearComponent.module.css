@@ -1,0 +1,81 @@
+.porFavorText {
+  text-align: center;
+}
+
+.crearFormulario{
+
+  display: grid;
+  /* Usar grid para organizar en columnas */
+  grid-template-columns: repeat(3, 1fr);
+  /* Crear tres columnas de igual tamaño */
+  gap: 20px;
+  /* Espacio entre columnas */
+}
+
+.crearFormulario label {
+  display: block;
+  /* Mostrar la etiqueta en bloque */
+  font-weight: bold;
+  /* Texto en negrita */
+  margin-bottom: 5px;
+  /* Separar la etiqueta del input */
+  text-align: center;
+}
+
+.crearFormulario input[type="text"],
+.crearFormulario select {
+  width: 100%;
+  /* Ocupa todo el ancho disponible dentro de .form-group */
+  padding: 8px;
+  /* Espaciado interno */
+  border: 1px solid #000;
+  /* Borde del campo */
+  border-radius: 3px;
+  /* Bordes redondeados */
+  box-sizing: border-box;
+  /* Incluir padding y border en el ancho total */
+  margin-bottom: 15px;
+  /* Separar los campos verticalmente */
+  background-color: #f6f6f6;
+  /* Color de fondo */
+}
+
+.crearFormulario input:hover{
+  background-color: rgb(255, 225, 213);
+}
+
+/* Asegúrate de que el CSS para el select esté bien definido y no sobrescrito */
+
+.tecCrear {
+  box-sizing: border-box;
+  /* Incluye padding y border en el ancho total */
+}
+
+.tecCrear:hover {
+  background-color: rgb(255, 225, 213);
+}
+
+.botonCrear {
+  width: 100%;
+  /* Ocupa todo el ancho disponible */
+  padding: 10px;
+  background-color: #ff0202;
+  /* Fondo del botón */
+  color: white;
+  /* Color del texto */
+  border-radius: 5px;
+  /* Bordes redondeados */
+  margin-top: 10px;
+  /* Separación del botón del resto del contenido */
+  border: none;
+  /* Sin borde adicional para el botón */
+  cursor: pointer;
+  /* Cambiar cursor a mano sobre el botón */
+  font-weight: bold;
+}
+
+
+.botonCrear:hover {
+  background-color: #cc0000;
+  /* Fondo del botón al pasar el ratón */
+}

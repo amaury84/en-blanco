@@ -39,8 +39,20 @@ app.get('/topologias', async (req, res) => {
 });
 
 // app.js
+
 app.post('/topologias', async (req, res) => {
-  const { IpEquipoDestino, EquipoDestino, UbicacionEquipoDestino, TrunkDest, Tecnologia, TrkROU, EquipoROU, UbicacionEquipoROU, IpEquipoROU } = req.body;
+  const { 
+    IpEquipoDestino, EquipoDestino, UbicacionEquipoDestino, TrunkDest, Tecnologia, 
+    TrkROU, EquipoROU, UbicacionEquipoROU, IpEquipoROU, 
+    TrkRx1, EquipoTx1, TrkTx1, TrkRx2, EquipoTx2, TrkTx2, 
+    TrkRx3, EquipoTx3, TrkTx3, TrkRx4, EquipoTx4, TrkTx4, 
+    TrkRx5, EquipoTx5, TrkTx5 
+  } = req.body;
+
+  // Validación de campos requeridos
+  if (!EquipoDestino || !TrunkDest || !Tecnologia || !EquipoROU) {
+    return res.status(400).json({ error: "Por favor, completa todos los campos requeridos." });
+  }
 
   try {
     const nuevaTopologia = new Topologia({
@@ -52,14 +64,54 @@ app.post('/topologias', async (req, res) => {
       TrkROU,
       EquipoROU,
       UbicacionEquipoROU,
-      IpEquipoROU
+      IpEquipoROU,
+      TrkRx1,
+      EquipoTx1,
+      TrkTx1,
+      TrkRx2,
+      EquipoTx2,
+      TrkTx2,
+      TrkRx3,
+      EquipoTx3,
+      TrkTx3,
+      TrkRx4,
+      EquipoTx4,
+      TrkTx4,
+      TrkRx5,
+      EquipoTx5,
+      TrkTx5
     });
+
 
     await nuevaTopologia.save();
     res.status(201).json({ message: "Topología creada con éxito!" });
   } catch (error) {
     console.error('Error al crear la topología:', error);
-    res.status(500).json({ error: 'Error al crear la topología' });
+    res.status(500).json({ error: 'Error al crear la topología,Por favor, completa todos los campos requerido' });
+  }
+});
+
+
+// backend.js (o tu archivo de servidor)
+app.put('/topologias/:id', async (req, res) => {
+  const { id } = req.params;
+  const { EquipoDestino, Tecnologia } = req.body;
+
+  try {
+    const updatedNode = await Topologia.findByIdAndUpdate(
+      id,
+      { EquipoDestino, Tecnologia },
+      { new: true } // Opcional: para devolver el documento actualizado
+    );
+    
+    if (!updatedNode) {
+      return res.status(404).json({ error: 'Nodo no encontrado' });
+    }
+
+    res.json(updatedNode);
+  } catch (error) {
+    console.error('Error al actualizar el nodo:', error);
+    res.status(500).json({ error: 'Error al actualizar el nodo' });
   }
 });
 
