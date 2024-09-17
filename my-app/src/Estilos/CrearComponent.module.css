@@ -20,6 +20,7 @@
   margin-bottom: 5px;
   /* Separar la etiqueta del input */
   text-align: center;
+
 }
 
 .crearFormulario input[type="text"],
@@ -41,7 +42,7 @@
 }
 
 .crearFormulario input:hover{
-  background-color: rgb(255, 225, 213);
+  background-color: rgb(220, 220, 220);
 }
 
 /* Asegúrate de que el CSS para el select esté bien definido y no sobrescrito */
@@ -51,9 +52,6 @@
   /* Incluye padding y border en el ancho total */
 }
 
-.tecCrear:hover {
-  background-color: rgb(255, 225, 213);
-}
 
 .botonCrear {
   width: 100%;

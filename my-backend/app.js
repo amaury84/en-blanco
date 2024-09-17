@@ -43,10 +43,9 @@ app.get('/topologias', async (req, res) => {
 app.post('/topologias', async (req, res) => {
   const { 
     IpEquipoDestino, EquipoDestino, UbicacionEquipoDestino, TrunkDest, Tecnologia, 
-    TrkROU, EquipoROU, UbicacionEquipoROU, IpEquipoROU, 
     TrkRx1, EquipoTx1, TrkTx1, TrkRx2, EquipoTx2, TrkTx2, 
     TrkRx3, EquipoTx3, TrkTx3, TrkRx4, EquipoTx4, TrkTx4, 
-    TrkRx5, EquipoTx5, TrkTx5 
+    TrkRx5, EquipoTx5, TrkTx5, TrkROU, EquipoROU, UbicacionEquipoROU, IpEquipoROU 
   } = req.body;
 
   // Validación de campos requeridos
@@ -61,10 +60,6 @@ app.post('/topologias', async (req, res) => {
       UbicacionEquipoDestino,
       TrunkDest,
       Tecnologia,
-      TrkROU,
-      EquipoROU,
-      UbicacionEquipoROU,
-      IpEquipoROU,
       TrkRx1,
       EquipoTx1,
       TrkTx1,
@@ -79,7 +74,11 @@ app.post('/topologias', async (req, res) => {
       TrkTx4,
       TrkRx5,
       EquipoTx5,
-      TrkTx5
+      TrkTx5,
+      TrkROU,
+      EquipoROU,
+      UbicacionEquipoROU,
+      IpEquipoROU
     });
 
 
@@ -87,23 +86,74 @@ app.post('/topologias', async (req, res) => {
     res.status(201).json({ message: "Topología creada con éxito!" });
   } catch (error) {
     console.error('Error al crear la topología:', error);
-    res.status(500).json({ error: 'Error al crear la topología,Por favor, completa todos los campos requerido' });
+    res.status(500).json({ error: 'Error al crear la topología,Por favor, completa todos los campos requeridos' });
   }
 });
 
 
 // backend.js (o tu archivo de servidor)
+// backend.js (o tu archivo de servidor)
 app.put('/topologias/:id', async (req, res) => {
   const { id } = req.params;
-  const { EquipoDestino, Tecnologia } = req.body;
+  const {
+    IpEquipoDestino,
+    EquipoDestino,
+    UbicacionEquipoDestino,
+    TrunkDest,
+    Tecnologia,
+    TrkRx1,
+    EquipoTx1,
+    TrkTx1,
+    TrkRx2,
+    EquipoTx2,
+    TrkTx2,
+    TrkRx3,
+    EquipoTx3,
+    TrkTx3,
+    TrkRx4,
+    EquipoTx4,
+    TrkTx4,
+    TrkRx5,
+    EquipoTx5,
+    TrkTx5,
+    TrkROU,
+    EquipoROU,
+    UbicacionEquipoROU,
+    IpEquipoROU
+  } = req.body;
 
   try {
     const updatedNode = await Topologia.findByIdAndUpdate(
       id,
-      { EquipoDestino, Tecnologia },
-      { new: true } // Opcional: para devolver el documento actualizado
+      {
+        IpEquipoDestino,
+        EquipoDestino,
+        UbicacionEquipoDestino,
+        TrunkDest,
+        Tecnologia,
+        TrkRx1,
+        EquipoTx1,
+        TrkTx1,
+        TrkRx2,
+        EquipoTx2,
+        TrkTx2,
+        TrkRx3,
+        EquipoTx3,
+        TrkTx3,
+        TrkRx4,
+        EquipoTx4,
+        TrkTx4,
+        TrkRx5,
+        EquipoTx5,
+        TrkTx5,
+        TrkROU,
+        EquipoROU,
+        UbicacionEquipoROU,
+        IpEquipoROU
+      },
+      { new: true } // Para devolver el documento actualizado
     );
-    
+
     if (!updatedNode) {
       return res.status(404).json({ error: 'Nodo no encontrado' });
     }
@@ -114,6 +164,7 @@ app.put('/topologias/:id', async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar el nodo' });
   }
 });
+
 
 
 app.listen(port, () => {

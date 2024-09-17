@@ -11,7 +11,7 @@ export const crearMatriz = (topologias = []) => {
 
       // Extraer valores del objeto ignorando las excepciones
       Object.keys(topologia).forEach((key) => {
-        if (!["_id", "IpEquipoDestino","UbicacionEquipoDestino","UbicacionEquipoROU","IpEquipoROU", "Tecnologia"].includes(key)) {
+        if (!["_id", "IpEquipoDestino","UbicacionEquipoDestino","UbicacionEquipoROU","IpEquipoROU", "Tecnologia","createdAt","updatedAt"].includes(key)) {
           valores.push(topologia[key]);
         }
       });
