@@ -6,6 +6,7 @@ const EditComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchTechnology, setSearchTechnology] = useState("");
   const [editingData, setEditingData] = useState([]);
+  const [topologiaCreada, setTopologiaCreada] = useState(false); // Nuevo estado para el mensaje
 
   const handleSearch = async () => {
     try {
@@ -26,8 +27,10 @@ const EditComponent = () => {
         updatedData
       );
       console.log("Datos actualizados correctamente:", response.data);
+      setTopologiaCreada(true); // Se establece en true al guardar correctamente
     } catch (error) {
       console.error("Error al guardar los datos:", error);
+      setTopologiaCreada(false); // En caso de error, se asegura de no mostrar el mensaje de éxito
     }
   };
 
@@ -46,7 +49,6 @@ const EditComponent = () => {
         />
 
         <select
-
           id="tecnologia"
           className={styles.selectBusquedaEditar}
           value={searchTechnology}
@@ -56,13 +58,22 @@ const EditComponent = () => {
           <option value="FTTH">FTTH</option>
           <option value="FTTO">FTTO</option>
         </select>
-        <button className={styles.botonBuscarEditar} onClick={handleSearch}>Buscar</button>
+        <button className={styles.botonBuscarEditar} onClick={handleSearch}>
+          Buscar
+        </button>
       </div>
+
+      {/* Mensaje de éxito */}
+      {topologiaCreada && (
+        <div className={styles.cuadroExito}>
+          La topología se creó exitosamente.
+        </div>
+      )}
 
       {/* Renderiza un formulario por cada resultado */}
       {editingData.map((item) => (
         <div key={item._id} className={styles.formContainer}>
-          <form className= {styles.formularioEditar}> 
+          <form className={styles.formularioEditar}>
             <label>IP OLT/CMTS:</label>
             <input
               type="text"
@@ -123,8 +134,7 @@ const EditComponent = () => {
             />
 
             <label>TECNOLOGÍA(*)</label>
-            <input
-              type="text"
+            <select
               value={item.Tecnologia || ""}
               onChange={(e) => {
                 const updated = { ...item, Tecnologia: e.target.value };
@@ -134,7 +144,11 @@ const EditComponent = () => {
                   )
                 );
               }}
-            />
+            >
+              <option value="FTTO">FTTO</option>
+              <option value="FTTH">FTTH</option>
+              <option value="CMTS">CMTS</option>
+            </select>
 
             <label>IN EQUIPO TX1</label>
             <input

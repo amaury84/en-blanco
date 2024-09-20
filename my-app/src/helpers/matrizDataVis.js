@@ -1,18 +1,35 @@
-//helper matriz
+// helper matriz
 
 export const crearMatriz = (topologias = []) => {
   if (topologias?.length > 0) {
     const matriz = [];
     matriz.length = 0; // Limpiar la matriz si ya contiene datos
 
+    // Definir el orden de los campos que quieres tomar en cuenta
+    const ordenCampos = [
+      "IpEquipoDestino", "EquipoDestino", "UbicacionEquipoDestino", "TrunkDest", "Tecnologia", 
+      "TrkRx1", "EquipoTx1", "TrkTx1", "TrkRx2", "EquipoTx2", "TrkTx2", "TrkRx3", 
+      "EquipoTx3", "TrkTx3", "TrkRx4", "EquipoTx4", "TrkTx4", "TrkRx5", 
+      "EquipoTx5", "TrkTx5", "TrkROU", "EquipoROU", "UbicacionEquipoROU", "IpEquipoROU"
+    ];
+
+    // Excepciones: campos que no deben ser tomados en cuenta
+    const excepciones = [
+      "_id", "IpEquipoDestino", "UbicacionEquipoDestino", "UbicacionEquipoROU", 
+      "IpEquipoROU", "Tecnologia", "createdAt", "updatedAt"
+    ];
+
     topologias.forEach((topologia) => {
       const fila = [];
       const valores = [];
 
-      // Extraer valores del objeto ignorando las excepciones
-      Object.keys(topologia).forEach((key) => {
-        if (!["_id", "IpEquipoDestino","UbicacionEquipoDestino","UbicacionEquipoROU","IpEquipoROU", "Tecnologia","createdAt","updatedAt"].includes(key)) {
-          valores.push(topologia[key]);
+      // Recorrer en el orden de los campos definidos y verificar que no estén en excepciones
+      ordenCampos.forEach((campo) => {
+        const valor = topologia[campo];
+
+        // Si el campo no está en excepciones y tiene un valor, lo agregamos
+        if (!excepciones.includes(campo) && valor !== undefined && valor !== "") {
+          valores.push(valor);
         }
       });
 
@@ -37,6 +54,7 @@ export const crearMatriz = (topologias = []) => {
     console.log("Matriz helper:", matriz);
     return matriz;
   }
+
   console.log("topologias helper", topologias);
   return topologias;
 };
