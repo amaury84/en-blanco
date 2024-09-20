@@ -10,8 +10,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-
-mongoose.connect('mongodb://localhost:27017/Claro', {
+mongoose.connect('mongodb://172.31.33.33:27017/Claro', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -80,7 +79,6 @@ app.post('/topologias', async (req, res) => {
       UbicacionEquipoROU,
       IpEquipoROU
     });
-
 
     await nuevaTopologia.save();
     res.status(201).json({ message: "Topología creada con éxito!" });
@@ -168,5 +166,5 @@ app.put('/topologias/:id', async (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
+  console.log(`EL servicio se esta ejecutando sobre el puerto: ${port}`);
 });

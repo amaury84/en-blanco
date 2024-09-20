@@ -9,7 +9,7 @@ const TableComponent = ({ query, tecnologia }) => {
     console.log(data);
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/topologias", {
+        const response = await axios.get("http://172.31.33.33:5000/topologias", {
           params: { query, tecnologia }, // Enviar la consulta como parámetro
         });
         setData(response.data);

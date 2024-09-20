@@ -4,7 +4,7 @@ import axios from "axios";
 export const getTopologias = async (query,tecnologia ) => {
 
   try {
-    const response = await axios.get("http://localhost:5000/topologias", {
+    const response = await axios.get("http://172.31.33.33:5000/topologias", {
       params: { query: query, tecnologia: tecnologia },
     });
     console.log("servicio vis", response.data);

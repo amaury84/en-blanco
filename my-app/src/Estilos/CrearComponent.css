@@ -1,0 +1,37 @@
+/* Estilos/App.css */
+
+body {
+    margin: 100px ; /* Forzar la aplicación del margen */
+    padding: 0;
+    border: 10px !important;
+    box-sizing: border-box;
+}
+
+main{
+    margin: 50px;
+}
+
+label {
+    display: block;
+    border: 10px;
+    border-color: black !important;
+    margin-bottom: 5px; /* Espacio entre el label y el input */
+  }
+  
+  input,
+  select {
+    display: block;
+    width: 100%; /* Asegura que el input tenga un ancho del 100% del contenedor */
+    padding: 8px; /* Espaciado interno del input */
+    margin-bottom: 15px; /* Espacio entre inputs */
+    border: 5px;
+    border-color:black ;
+    box-sizing: border-box; /* Incluye padding y border en el width del input */
+  }
+
+button{
+  color: white;
+  background-color: #ff0000; /* Green */
+
+}
+  

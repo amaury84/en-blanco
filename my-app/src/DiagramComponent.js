@@ -104,7 +104,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/topologias", {
+      .get("http://172.31.33.33:5000/topologias", {
         params: { query: consulta, tecnologia: tecnologia },
       })
       .then((response) => {
