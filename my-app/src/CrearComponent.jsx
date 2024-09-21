@@ -76,7 +76,7 @@ function CrearComponent() {
     addIfNotEmpty("TrkTx5", trkTx5);
   
     try {
-      const response = await axios.post("http://localhost:5000/topologias", newTopologia);
+      const response = await axios.post("http://172.31.33.33:5000/topologias", newTopologia);
       alert("Topología creada con éxito!");
     } catch (error) {
       console.error("Error al crear la topología:", error);

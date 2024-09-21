@@ -10,7 +10,7 @@ const EditComponent = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/topologias", {
+      const response = await axios.get("http://172.31.33.33:5000/topologias", {
         params: { query: searchQuery, tecnologia: searchTechnology },
       });
       console.log("Datos obtenidos:", response.data);
@@ -23,7 +23,7 @@ const EditComponent = () => {
   const handleSave = async (id, updatedData) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/topologias/${id}`,
+        `http://172.31.33.33:5000/topologias/${id}`,
         updatedData
       );
       console.log("Datos actualizados correctamente:", response.data);
