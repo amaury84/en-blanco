@@ -73,7 +73,9 @@ const EditComponent = () => {
       {/* Renderiza un formulario por cada resultado */}
       {editingData.map((item) => (
         <div key={item._id} className={styles.formContainer}>
+
           <form className={styles.formularioEditar}>
+
             <label>IP OLT/CMTS:</label>
             <input
               type="text"
