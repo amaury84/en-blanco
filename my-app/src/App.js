@@ -37,6 +37,32 @@ const App = () => {
             alt="Bandera"
             className="bandera"
           />
+          <div className="nav-item dropdown">
+            <a
+              className="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            ></a>
+
+            <ul className="dropdown-menu">
+              <li>
+                <a className="dropdown-item" href="#">
+                  Salir ↩<i class="bi bi-escape"></i>
+                </a>
+              </li>
+
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  Usuarios
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="botonesContainer">
           <Link to="/" className="cuadroBotones">
@@ -54,7 +80,7 @@ const App = () => {
       <header>
         <h1>TOPOLOGÍAS DE RED CLARO</h1>
         <img
-          src={`${process.env.PUBLIC_URL}/imagenes/claro-hogar-259.jpg`}
+          src={`${process.env.PUBLIC_URL}/imagenes/claro-logo.png`}
           alt="Claro Logo"
         />
       </header>
