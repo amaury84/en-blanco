@@ -33,7 +33,19 @@ const EditComponent = () => {
       setTopologiaCreada(false); // En caso de error, se asegura de no mostrar el mensaje de éxito
     }
   };
-
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("¿Está seguro que desea eliminar este elemento?");
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://172.31.33.33:5000/topologias/${id}`);
+        setEditingData((prevData) => prevData.filter((item) => item._id !== id));
+        alert("Elemento eliminado con éxito.");
+      } catch (error) {
+        console.error("Error al eliminar el elemento:", error);
+        alert("Hubo un error al eliminar el elemento.");
+      }
+    }
+  };
   return (
     <main>
       <div className={styles.contenedorEncabezadoEditar}>
@@ -74,6 +86,12 @@ const EditComponent = () => {
       {editingData.map((item) => (
         <div key={item._id} className={styles.formContainer}>
           <form className={styles.formularioEditar}>
+            <img className={styles.borrarBoton}
+              src="/imagenes/eliminar icono.png"
+              onClick={() => handleDelete(item._id)}
+              alt="Eliminar"
+            />
+            <br></br>
             <label>IP OLT/CMTS:</label>
             <input
               type="text"
@@ -125,6 +143,62 @@ const EditComponent = () => {
               value={item.TrunkDest || ""}
               onChange={(e) => {
                 const updated = { ...item, TrunkDest: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>PUERTO DESTINO(*)</label>
+            <input
+              type="text"
+              value={item.TrkROU || ""}
+              onChange={(e) => {
+                const updated = { ...item, TrkROU: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>EQUIPO DESTINO(*)</label>
+            <input
+              type="text"
+              value={item.EquipoROU || ""}
+              onChange={(e) => {
+                const updated = { ...item, EquipoROU: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>UBICACIÓN EQUIPO DESTINO</label>
+            <input
+              type="text"
+              value={item.UbicacionEquipoROU || ""}
+              onChange={(e) => {
+                const updated = { ...item, UbicacionEquipoROU: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>IP EQUIPO DESTINO</label>
+            <input
+              type="text"
+              value={item.IpEquipoROU || ""}
+              onChange={(e) => {
+                const updated = { ...item, IpEquipoROU: e.target.value };
                 setEditingData((prevData) =>
                   prevData.map((data) =>
                     data._id === item._id ? updated : data
@@ -360,61 +434,7 @@ const EditComponent = () => {
               }}
             />
 
-            <label>PUERTO DESTINO(*)</label>
-            <input
-              type="text"
-              value={item.TrkROU || ""}
-              onChange={(e) => {
-                const updated = { ...item, TrkROU: e.target.value };
-                setEditingData((prevData) =>
-                  prevData.map((data) =>
-                    data._id === item._id ? updated : data
-                  )
-                );
-              }}
-            />
 
-            <label>EQUIPO DESTINO(*)</label>
-            <input
-              type="text"
-              value={item.EquipoROU || ""}
-              onChange={(e) => {
-                const updated = { ...item, EquipoROU: e.target.value };
-                setEditingData((prevData) =>
-                  prevData.map((data) =>
-                    data._id === item._id ? updated : data
-                  )
-                );
-              }}
-            />
-
-            <label>UBICACIÓN EQUIPO DESTINO</label>
-            <input
-              type="text"
-              value={item.UbicacionEquipoROU || ""}
-              onChange={(e) => {
-                const updated = { ...item, UbicacionEquipoROU: e.target.value };
-                setEditingData((prevData) =>
-                  prevData.map((data) =>
-                    data._id === item._id ? updated : data
-                  )
-                );
-              }}
-            />
-
-            <label>IP EQUIPO DESTINO</label>
-            <input
-              type="text"
-              value={item.IpEquipoROU || ""}
-              onChange={(e) => {
-                const updated = { ...item, IpEquipoROU: e.target.value };
-                setEditingData((prevData) =>
-                  prevData.map((data) =>
-                    data._id === item._id ? updated : data
-                  )
-                );
-              }}
-            />
 
             <button
               type="button"

@@ -163,6 +163,22 @@ app.put('/topologias/:id', async (req, res) => {
   }
 });
 
+app.delete('/topologias/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedNode = await Topologia.findByIdAndDelete(id);
+
+    if (!deletedNode) {
+      return res.status(404).json({ error: 'Topología no encontrada' });
+    }
+
+    res.json({ message: 'Topología eliminada con éxito' });
+  } catch (error) {
+    console.error('Error al eliminar la topología:', error);
+    res.status(500).json({ error: 'Error al eliminar la topología' });
+  }
+});
 
 
 app.listen(port, () => {
