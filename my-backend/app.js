@@ -1,8 +1,11 @@
 // app.js
 const express = require('express');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');   
 const cors = require('cors');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Topologia = require('./models/topologia');
+const Usuario = require('./models/usuario');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -15,6 +18,7 @@ mongoose.connect('mongodb://172.31.33.33:27017/Claro', {
   useUnifiedTopology: true
 });
 
+//////////////////////////////////////////CRUD TOPOLOGIAS Y DIAGRAMA//////////////////////////////////////////////
 app.get('/topologias', async (req, res) => {
   let { query, tecnologia } = req.query;
   let filter = {};
@@ -37,7 +41,6 @@ app.get('/topologias', async (req, res) => {
   }
 });
 
-// app.js
 
 app.post('/topologias', async (req, res) => {
   const { 
@@ -88,9 +91,6 @@ app.post('/topologias', async (req, res) => {
   }
 });
 
-
-// backend.js (o tu archivo de servidor)
-// backend.js (o tu archivo de servidor)
 app.put('/topologias/:id', async (req, res) => {
   const { id } = req.params;
   const {
@@ -151,34 +151,89 @@ app.put('/topologias/:id', async (req, res) => {
       },
       { new: true } // Para devolver el documento actualizado
     );
-
+    
     if (!updatedNode) {
       return res.status(404).json({ error: 'Nodo no encontrado' });
     }
-
+    
     res.json(updatedNode);
   } catch (error) {
-    console.error('Error al actualizar el nodo:', error);
-    res.status(500).json({ error: 'Error al actualizar el nodo' });
-  }
+  console.error('Error al actualizar el nodo:', error);
+  res.status(500).json({ error: 'Error al actualizar el nodo' });
+}
 });
 
 app.delete('/topologias/:id', async (req, res) => {
   const { id } = req.params;
-
+  
   try {
     const deletedNode = await Topologia.findByIdAndDelete(id);
-
+    
     if (!deletedNode) {
       return res.status(404).json({ error: 'Topología no encontrada' });
     }
-
+    
     res.json({ message: 'Topología eliminada con éxito' });
   } catch (error) {
     console.error('Error al eliminar la topología:', error);
     res.status(500).json({ error: 'Error al eliminar la topología' });
   }
 });
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////CRUD USUARIOS///////////////////////////////////////////////////////////
+// Ruta para registrar un usuario
+app.post('/register', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    let user = await Usuario.findOne({ email });
+    if (user) return res.status(400).json({ error: 'El usuario ya existe' });
+
+    user = new Usuario({ email, password });
+    await user.save();
+    res.status(201).json({ message: 'Usuario creado con éxito' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al registrar el usuario' });
+  }
+});
+
+// Ruta para iniciar sesión
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await Usuario.findOne({ email });
+    if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) return res.status(400).json({ error: 'Contraseña incorrecta' });
+
+    const token = jwt.sign({ id: user._id }, 'secretkey', { expiresIn: '1h' });  // Usa una clave secreta segura
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al iniciar sesión' });
+  }
+});
+
+// Middleware para verificar el token
+function authMiddleware(req, res, next) {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ error: 'Acceso denegado, token no proporcionado' });
+  
+  try {
+    const decoded = jwt.verify(token, 'secretkey');  // Asegúrate de usar la misma clave secreta
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ error: 'Token no válido' });
+  }
+}
+
+// Ejemplo de una ruta protegida
+app.get('/protected', authMiddleware, (req, res) => {
+  res.json({ message: 'Acceso concedido a ruta protegida', user: req.user });
+});
+
 
 
 app.listen(port, () => {

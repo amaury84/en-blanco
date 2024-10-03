@@ -24,6 +24,15 @@ main {
   margin-top: 3px;
 }
 
+.banderaContainer {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los elementos */
+}
+
+.dropdown {
+  margin-left: 20px; /* Opción 2: empuja el dropdown hacia la derecha */
+}
+
 .mainContainer {
   display: flex;
   align-items: stretch;
@@ -34,6 +43,7 @@ main {
 }
 
 .botonesContainer {
+  
   display: flex;
   justify-content: space-between;
   /* Distribuye los botones horizontalmente */
@@ -84,6 +94,7 @@ main {
 
 header {
   width: 100%;
+  height: 50px;
   padding: 20px;
   background-color: rgb(255, 0, 0);
   color: white;
@@ -99,7 +110,7 @@ header h1 {
 }
 
 header img {
-  height: 80px;
+  height: 35px;
   /* Ajusta el tamaño de la imagen según sea necesario */
   position: absolute;
   right: 45px;
@@ -113,4 +124,5 @@ footer {
 
 h1 {
   text-align: center;
+  font-size: 25px;
 }
