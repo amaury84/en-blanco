@@ -42,10 +42,14 @@
     height: 50px;
     background-color: rgb(255, 0, 0);
     color: white;
-    font-weight: bold;
     border-radius: 10px;
     border-color: azure;
-   
+}
+
+.contenedorLogin button:hover{
+    background-color: #ca0000;
+    font-weight: bold;
+    transform: scale(1.05);
 }
 
 
@@ -54,9 +58,11 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-
 }
 
-.coneee{
-    background-color: blue;
-}
+
+.mensaje {
+    margin-top: 15px;
+    color: #d9534f; /* Color rojo para mensajes de error */
+    text-align: center;
+  }

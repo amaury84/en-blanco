@@ -29,8 +29,7 @@ const topologiaSchema = new mongoose.Schema(
     UbicacionEquipoROU: { type: String, required: false },
     IpEquipoROU: { type: String, required: false },
   },
-  { timestamps: true }
-);
+  { timestamps: true });
 // Método para convertir el documento a JSON
 topologiaSchema.methods.toJSON = function () {
   const { __v, ...data } = this.toObject();

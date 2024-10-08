@@ -96,7 +96,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
       ...ObjEquiposROU,
     ];
 
-    console.log("Nodos Temporales:", nodosTemp); // Imprime los nodos temporales
+  
 
     setNodes(nodosTemp);
     setNodesConection(nodosConexion);
@@ -214,9 +214,15 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
   return (
     <div
       ref={diagramRef}
-      style={{ width: "100%", height: "300px", backgroundColor: "#383838" }}
+      style={{
+        width: "100%",
+        height: "300px",
+        backgroundColor: "#383838",
+        borderRadius: "15px", // Aquí redondeas las esquinas
+      }}
     />
   );
+  
 };
 
 export default DiagramComponent;

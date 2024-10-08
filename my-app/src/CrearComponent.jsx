@@ -36,17 +36,17 @@ function CrearComponent() {
       alert("Por favor llene el campo Obligatorio Tecnología");
       return; // No continúa con la creación de la topología
     }
-  
+
     // Solo agregar campos que no estén vacíos
     const newTopologia = {};
-    
+
     // Función para agregar campos no vacíos
     const addIfNotEmpty = (fieldName, value) => {
       if (value.trim() !== "") {
         newTopologia[fieldName] = value;
       }
     };
-  
+
     // Campos obligatorios
     addIfNotEmpty("IpEquipoDestino", ipEquipoDestino);
     addIfNotEmpty("EquipoDestino", equipoDestino);
@@ -57,7 +57,7 @@ function CrearComponent() {
     addIfNotEmpty("EquipoROU", equipoROU);
     addIfNotEmpty("UbicacionEquipoROU", ubicacionEquipoROU);
     addIfNotEmpty("IpEquipoROU", ipEquipoROU);
-  
+
     // Nuevos campos opcionales
     addIfNotEmpty("TrkRx1", trkRx1);
     addIfNotEmpty("EquipoTx1", equipoTx1);
@@ -74,24 +74,28 @@ function CrearComponent() {
     addIfNotEmpty("TrkRx5", trkRx5);
     addIfNotEmpty("EquipoTx5", equipoTx5);
     addIfNotEmpty("TrkTx5", trkTx5);
-  
+
     try {
-      const response = await axios.post("http://172.31.33.33:5000/topologias", newTopologia);
+      const response = await axios.post(
+        "http://172.31.33.33:5000/topologias",
+        newTopologia
+      );
       alert("Topología creada con éxito!");
     } catch (error) {
       console.error("Error al crear la topología:", error);
       alert("Error al crear la topología.");
     }
   };
-  
 
   return (
     <main>
-      <h1>Registrar nueva TOPOLOGÍA</h1>
-      <p className={styles.porFavorText}>
-        Por favor llene todos los campos marcados con "*" ya que son
-        obligatorios.
-      </p>
+      <div className={styles.contenedorDescripcion}>
+        <h1>REGISTRAR NUEVA TOPOLOGÍA</h1>
+        <p>
+          Por favor llene todos los campos marcados con "*" ya que son
+          obligatorios.
+        </p>
+      </div>
       <div>
         <form className={styles.crearFormulario} onSubmit={handleSubmit}>
           {/* Campos existentes */}
@@ -318,9 +322,9 @@ function CrearComponent() {
             />
           </div>
           <div>
-            <label htmlFor=" "> </label>
+            <label htmlFor=""> </label>
           </div>
-  
+
           <button className={styles.botonCrear} type="submit">
             Crear Topología
           </button>

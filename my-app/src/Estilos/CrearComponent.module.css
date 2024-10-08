@@ -1,15 +1,27 @@
-.porFavorText {
+.contenedorDescripcion{
+  height: 100px;
+  background-color: #000;
+  color: white;
+  border-radius: 10px;
   text-align: center;
+  padding: 10px;
+  font-size: large;
 }
 
-.crearFormulario{
 
+.crearFormulario{
+  margin-top: 20px;
   display: grid;
   /* Usar grid para organizar en columnas */
   grid-template-columns: repeat(3, 1fr);
   /* Crear tres columnas de igual tamaño */
   gap: 20px;
   /* Espacio entre columnas */
+  background-color: rgb(207, 207, 207);
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .crearFormulario label {
@@ -25,7 +37,7 @@
 
 .crearFormulario input[type="text"],
 .crearFormulario select {
-  width: 100%;
+  width: 95%;
   /* Ocupa todo el ancho disponible dentro de .form-group */
   padding: 8px;
   /* Espaciado interno */
@@ -54,7 +66,7 @@
 
 
 .botonCrear {
-  width: 100%;
+  width: 95%;
   /* Ocupa todo el ancho disponible */
   padding: 10px;
   background-color: #ff0202;
@@ -68,12 +80,12 @@
   border: none;
   /* Sin borde adicional para el botón */
   cursor: pointer;
-  /* Cambiar cursor a mano sobre el botón */
-  font-weight: bold;
+  border: 1px solid #910101;
 }
 
 
 .botonCrear:hover {
-  background-color: #cc0000;
-  /* Fondo del botón al pasar el ratón */
+  background-color: #ca0000;
+  font-weight: bold;
+  transform: scale(1.05);
 }

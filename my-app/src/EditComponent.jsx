@@ -49,15 +49,15 @@ const EditComponent = () => {
   return (
     <main>
       <div className={styles.contenedorEncabezadoEditar}>
-        <h1>EDICIÓN DE TOPOLOGÍA</h1>
+        <h1>EDITAR TOPOLOGÍA</h1>
         <p className={styles.ingreseOlt}>
-          Ingrese el nombre del Equipo a buscar
+          Ingrese el nombre del Equipo a buscar y la tecnología
         </p>
         <input
           className={styles.inputBusquedaEditar}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Equipo"
+          placeholder="Ingrese el equipo"
         />
 
         <select

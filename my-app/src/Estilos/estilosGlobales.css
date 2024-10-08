@@ -15,22 +15,27 @@ main {
 
 .bandera {
   max-height: 100%;
-  /* Asegura que la imagen nunca exceda la altura del contenedor */
   max-width: 50px;
-  /* Mantén la proporción de la imagen */
   height: auto;
-  /* Ajusta automáticamente la altura de acuerdo a la proporción */
   margin-left: 40px;
   margin-top: 3px;
+  border-radius: 5px;
 }
 
 .banderaContainer {
   display: flex;
-  align-items: center; /* Alinea verticalmente los elementos */
+  align-items: center;
+  /* Alinea verticalmente los elementos */
 }
 
 .dropdown {
-  margin-left: 20px; /* Opción 2: empuja el dropdown hacia la derecha */
+  margin-left: 20px;
+}
+
+.dropdown :hover {
+  transform: scale(1.03);
+  border-radius: 10px;
+ 
 }
 
 .mainContainer {
@@ -43,7 +48,7 @@ main {
 }
 
 .botonesContainer {
-  
+
   display: flex;
   justify-content: space-between;
   /* Distribuye los botones horizontalmente */
@@ -51,6 +56,7 @@ main {
   /* Asegura que los botones tengan la misma altura que el contenedor */
   padding: 2px;
   width: 100%;
+  background-color: aliceblue;
   /* Asegura que el contenedor ocupe el ancho disponible */
 }
 
@@ -120,6 +126,7 @@ footer {
   text-align: center;
   padding: 20px;
   border-top: 1px solid #aa1f1f;
+  background-color: rgb(228, 228, 228);
 }
 
 h1 {

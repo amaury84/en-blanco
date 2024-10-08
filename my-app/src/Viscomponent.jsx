@@ -11,7 +11,6 @@ export const Viscomponent = ({ query, tecnologia }) => {
   const getData = async () => {
     try {
       const datos = await getTopologias(query, tecnologia);
-      console.log("datos obtenidos:", datos);
       setData(datos);
       const visMatriz = crearMatriz(datos);
       setMatrizDataVis(visMatriz);
@@ -57,11 +56,9 @@ export const Viscomponent = ({ query, tecnologia }) => {
               type: "arrow",
               enabled: true,
               scaleFactor: 0.3,
-             
             },
           },
-          font:
-          {
+          font: {
             size: 5,
             color: "#c1121f",
           },
@@ -77,7 +74,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
       matrizDataVis.forEach((row, index) => {
         // Verifica el primer nodo
         if (!nodeIds[row[0]]) {
-          const isException = ["FOL" ].some((keyword) =>
+          const isException = ["FOL"].some((keyword) =>
             row[0].toUpperCase().includes(keyword)
           );
           nodeIds[row[0]] = nodeIdCounter++;
@@ -139,45 +136,50 @@ export const Viscomponent = ({ query, tecnologia }) => {
         return node;
       });
 
-      var minRoundness = 0.1;  // Valor mínimo de roundness
-      var maxRoundness = 0.8;  // Valor máximo de roundness
-      
-      var edges = matrizDataVis.map((row, index) => {
-        if (row[3]) {
-          var fromNode = nodeIds[row[0]];
-          var toNode = nodeIds[row[3]];
-          var salPort = row[1];
-          var llegPort = row[2];
-          var path = `${salPort} → ${llegPort}`;
-      
-          // Calcular roundness basado en el índice
-          var roundness = minRoundness + (maxRoundness - minRoundness) * (index / (matrizDataVis.length - 1));
-      
-          return {
-            from: fromNode,
-            to: toNode,
-            label: path,
-            font: {
-              align: "bottom",
-              color: "#6a040f",
-              size: 10,
-              strokeColor: "#e0e1dd",
-            },
-            smooth: {
-              type: 'curvedCW',
-              roundness: roundness
-            },
-          };
-        }
-        return null;
-      }).filter((edge) => edge !== null);
-      
+      var minRoundness = 0.1; // Valor mínimo de roundness
+      var maxRoundness = 0.8; // Valor máximo de roundness
+
+      var edges = matrizDataVis
+        .map((row, index) => {
+          if (row[3]) {
+            var fromNode = nodeIds[row[0]];
+            var toNode = nodeIds[row[3]];
+            var salPort = row[1];
+            var llegPort = row[2];
+            var path = `${salPort} → ${llegPort}`;
+
+            // Calcular roundness basado en el índice
+            var roundness =
+              minRoundness +
+              (maxRoundness - minRoundness) *
+                (index / (matrizDataVis.length - 1));
+
+            return {
+              from: fromNode,
+              to: toNode,
+              label: path,
+              font: {
+                align: "bottom",
+                color: "#6a040f",
+                size: 10,
+                strokeColor: "#e0e1dd",
+              },
+              smooth: {
+                type: "curvedCW",
+                roundness: roundness,
+              },
+            };
+          }
+          return null;
+        })
+        .filter((edge) => edge !== null);
+
       const networkData = {
         nodes: nodes,
         edges: edges,
       };
       new Network(container, networkData, options);
-          }
+    }
   }, [matrizDataVis]);
 
   function gimag(label) {
@@ -195,7 +197,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
         return "/imagenes/AAG.png";
       case upperLabel.includes("THBH"):
         return "/imagenes/thbh (1).png";
-      
+
       case ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
         upperLabel.includes(keyword)
       ):
@@ -207,5 +209,19 @@ export const Viscomponent = ({ query, tecnologia }) => {
     }
   }
 
-  return <div id="network" style={{ width: "100%", minHeight: "500px" }}></div>;
+  return (
+    <div
+      id="network"
+      style={{
+        width: "100%",
+        minHeight: "400px",
+        border: "1px solid lightgray", // Borde gris suave
+        borderRadius: "10px", // Opcional, redondear las esquinas
+        marginTop: "20px",
+        marginBottom: "20px",
+        marginLeft: "auto",
+        marginRight: "auto", // Centrar en pantalla 
+      }}
+    ></div>
+  );
 };

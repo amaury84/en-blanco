@@ -1,32 +1,68 @@
-
 .barraLateral {
   width: 20%;
   padding: 20px;
+  margin-top: 20px;
+  background-color: #c9c9c9;
+  border-radius: 15px;
 }
+
+.barraLateral h1 {
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: black;
+}
+
+.barraLateral ul { 
+  list-style: none; 
+  padding: 0; 
+  text-align: justify;
+  font-size: 15px; 
+
+}
+
+.barraLateral li { 
+  margin-bottom: 25px; /* Añade un margen entre los elementos li */
+  margin-top: 10px;
+  margin-left: 15px;
+}
+
+.barraLateral li a {
+  text-decoration: none;
+  color: black;
+}
+
+.barraLateral li a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  background-color: rgb(253, 113, 113);
+  border-radius: 5px;
+}
+
 
 .diagramaContainer {
   width: 80%;
   padding: 20px;
 }
 
-.todoContenedorInicio{
-  display: flex; /* Coloca los elementos en fila */
-  flex-direction: row; /* Mantiene la dirección en horizontal */
+.todoContenedorInicio {
+  display: flex;
+  flex-direction: row;
 }
 
-.FormularioBusquedaInicial{
+.FormularioBusquedaInicial {
   display: block;
-  /* Usar grid para organizar en columnas */
 }
 
-.barraBusqueda{
-  width: 200px;
+.barraBusqueda {
+  width: 100%;
   height: 50px;
   box-shadow: 0 2px 5px rgb(0, 0, 0);
   border: none;
-  padding: 10px;
+  font-size: 12PX;
   border-radius: 3px;
-  box-sizing: border-box;
+  text-align: center;
 }
 
 /* Botón buscar */
@@ -34,35 +70,55 @@
   background-color: #ff0404;
   box-shadow: 0 2px 5px rgb(0, 0, 0);
   color: #fff;
-  padding: 10px 20px;
-  /* Ajusta el padding para que coincida con la altura del input */
   border: none;
   border-radius: 5px;
-  height: 50px;
-  width: 200px;
+  height: 50px;  
+  width: 100%;
   cursor: pointer;
   margin-top: 5px;
   transition: background-color 0.3s;
   box-sizing: border-box;
-  /* Incluye padding y border en el width y height */
 }
 
 .botonBuscar:hover {
-  background-color: #ab0300;
+  background-color: #ca0000;
+  font-weight: bold;
+  transform: scale(1.05);
 }
 
 /* Estilos para la lista desplegable */
 .tecnologiaBusqueda {
-  width: 200px;
-  /* Ajusta el ancho según tus necesidades */
+  width: 100%;
   margin-top: 10px;
-  /* Ajusta la separación desde la barra de búsqueda */
   padding: 5px;
-  /* Espaciado interno */
   font-size: 16px;
-  /* Tamaño de fuente */
-  border-radius: px;
-  /* Bordes redondeados */
+  border-radius:10 px;
   box-shadow: 0 2px 5px rgb(0, 0, 0);
+}
+
+
+/* Estilo para la lista de sugerencias */
+.sugerencias {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  /* Permite desplazamiento si hay muchas sugerencias */
+  z-index: 1000;
+  padding: 0;
+  margin-top: 5px;
+  width: calc(100% - 16px);
+}
+
+/* Estilo para cada elemento de sugerencia */
+.sugerenciaItem {
+  padding: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.sugerenciaItem:hover {
+  background-color: #f0f0f0;
 }
 

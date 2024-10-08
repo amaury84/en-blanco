@@ -1,26 +1,16 @@
 // models/usuario.js
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 
 const usuarioSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  usser: { type: String, required: true },
+  Password: { type: String, required: true }  // 
 });
 
-usuarioSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    return next(error);
-  }
-});
-
-usuarioSchema.methods.matchPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
-};
+usuarioSchema.methods.toJSON =function(){
+  const {__v, ...data} = this.toObject();
+  return data;
+}
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 module.exports = Usuario;
+
