@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import styles from "./Estilos/Login.module.css"; // Asegúrate de tener los estilos correctos en este archivo
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const {
     register,
     handleSubmit,
@@ -38,6 +38,7 @@ const Login = () => {
         setMensaje("Error en la solicitud: " + error.message);
       }
     }
+    onLogin();
   };
 
   return (
